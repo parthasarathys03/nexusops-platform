@@ -57,17 +57,17 @@ const S_CLR = { ok: '#34D399', warn: '#FBBF24', off: '#6B7280' }
 
 /* ── colours live here, easy to change ── */
 const SB = {
-  bg:      '#22524D',   /* medium teal — not dark, not light, clearly branded */
-  border:  'rgba(255,255,255,.08)',
-  t1:      '#EDFAF9',   /* primary text   — crisp near-white          */
-  t2:      '#8ECBC6',   /* secondary text — soft teal-white           */
-  t3:      '#4A8F89',   /* muted labels                               */
-  actBg:   'rgba(255,255,255,.12)', /* active row bg  */
+  bg:      '#1E293B',   /* cool slate — enterprise standard, distinct from warm sandal */
+  border:  'rgba(255,255,255,.07)',
+  t1:      '#F1F5F9',   /* primary text   — crisp cool near-white     */
+  t2:      '#94A3B8',   /* secondary text — slate blue-gray           */
+  t3:      '#475569',   /* muted labels                               */
+  actBg:   'rgba(255,255,255,.1)',  /* active row bg  */
   actBar:  '#5EEAD4',               /* active left bar */
   actIcon: '#5EEAD4',               /* active icon     */
-  actText: '#FFFFFF',               /* active text     */
-  hovBg:   'rgba(255,255,255,.07)',
-  hovIcon: '#C2EDE9',
+  actText: '#F1F5F9',               /* active text     */
+  hovBg:   'rgba(255,255,255,.06)',
+  hovIcon: '#CBD5E1',
 }
 
 /* ── single nav button ── */

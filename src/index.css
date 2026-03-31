@@ -26,12 +26,12 @@
   --accent-b: #99EAE3;
   --ring:     rgba(13,148,136,.18);
 
-  /* Sidebar — medium teal */
-  --sb-bg:    #22524D;
-  --sb-bd:    rgba(255,255,255,.08);
-  --sb-t1:    #EDFAF9;
-  --sb-t2:    #8ECBC6;
-  --sb-t3:    #4A8F89;
+  /* Sidebar — cool slate */
+  --sb-bg:    #1E293B;
+  --sb-bd:    rgba(255,255,255,.07);
+  --sb-t1:    #F1F5F9;
+  --sb-t2:    #94A3B8;
+  --sb-t3:    #475569;
   --sb-w:     258px;
 
   /* Header */
