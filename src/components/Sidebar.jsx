@@ -57,17 +57,17 @@ const S_CLR = { ok: '#34D399', warn: '#FBBF24', off: '#6B7280' }
 
 /* ── colours live here, easy to change ── */
 const SB = {
-  bg:      '#192F2C',   /* main sidebar bg  — rich teal-forest       */
-  border:  'rgba(255,255,255,.07)',
-  t1:      '#D4EDE9',   /* primary text     */
-  t2:      '#6B9E99',   /* secondary text   */
-  t3:      '#38605B',   /* muted / labels   */
-  actBg:   'rgba(13,148,136,.15)',  /* active row bg   */
-  actBar:  '#0D9488',               /* active left bar */
-  actIcon: '#4DD5CE',               /* active icon     */
-  actText: '#C5EAE6',               /* active text     */
-  hovBg:   'rgba(255,255,255,.055)',
-  hovIcon: '#9DD4CF',
+  bg:      '#2D6B63',   /* mid teal — light enough to feel open       */
+  border:  'rgba(255,255,255,.1)',
+  t1:      '#F0FAF9',   /* primary text     — near white              */
+  t2:      '#A8D5D0',   /* secondary text   — bright teal-white       */
+  t3:      '#5A9E98',   /* muted / labels                             */
+  actBg:   'rgba(13,148,136,.22)',  /* active row bg   */
+  actBar:  '#2DD4C8',               /* active left bar */
+  actIcon: '#5EEDE6',               /* active icon     */
+  actText: '#EDFAF9',               /* active text     */
+  hovBg:   'rgba(255,255,255,.08)',
+  hovIcon: '#C2E8E4',
 }
 
 /* ── single nav button ── */
