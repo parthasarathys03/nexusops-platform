@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════
+   NEXUSOPS · Enterprise Grade Design System
+   Plus Jakarta Sans · Teal-Forest · Warm Canvas
+══════════════════════════════════════════════════ */
+:root {
+  /* Page canvas — warm, light, premium */
+  --bg:       #EDE8E0;
+  --surface:  #FFFFFF;
+  --raised:   #F7F3EE;
+  --border:   #E2D9CF;
+  --border2:  #C9BEB4;
+
+  /* Type */
+  --text-1:   #1A140C;
+  --text-2:   #514338;
+  --text-3:   #9B8D82;
+
+  /* Teal */
+  --accent:   #0D9488;
+  --accent2:  #0B7A6E;
+  --accent-s: #F0FDFB;
+  --accent-b: #99EAE3;
+  --ring:     rgba(13,148,136,.18);
+
+  /* Sidebar — rich teal-forest (NOT black) */
+  --sb-bg:    #192F2C;
+  --sb-bd:    rgba(255,255,255,.07);
+  --sb-t1:    #D8EFEC;
+  --sb-t2:    #698F8B;
+  --sb-t3:    #365752;
+  --sb-w:     258px;
+
+  /* Header */
+  --header-h: 58px;
+
+  /* Status */
+  --danger:   #C0252D;
+  --danger-s: #FFF1F2;
+  --danger-b: #FECACA;
+  --warn:     #B45309;
+  --warn-s:   #FFFBEB;
+  --warn-b:   #FDE68A;
+  --ok:       #065F46;
+  --ok-s:     #ECFDF5;
+  --ok-b:     #A7F3D0;
+}
+
+/* ── Base ──────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--text-1);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    letter-spacing: -.012em;
+  }
+  ::-webkit-scrollbar       { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 9px; }
+  ::selection               { background: rgba(13,148,136,.2); }
+}
+
+/* ── Cards — white with shadow, no dim ─────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(26,20,12,.05), 0 4px 16px rgba(26,20,12,.04);
+}
+.card-h { transition: box-shadow .22s ease, border-color .22s ease, transform .22s ease; }
+.card-h:hover {
+  border-color: var(--border2);
+  box-shadow: 0 4px 12px rgba(26,20,12,.08), 0 12px 32px rgba(26,20,12,.07);
+  transform: translateY(-2px);
+}
+
+/* ── Pill ──────────────────────────────────── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 11px; border-radius: 99px;
+  font-size: 11.5px; font-weight: 600; white-space: nowrap;
+}
+
+/* ── Buttons ───────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: 9px;
+  font-size: 13px; font-weight: 600; letter-spacing: -.01em;
+  cursor: pointer; transition: all .18s ease;
+  border: none; font-family: inherit;
+}
+.btn-a {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 1px 4px rgba(13,148,136,.28);
+}
+.btn-a:hover { background: var(--accent2); box-shadow: 0 4px 14px rgba(13,148,136,.38); transform: translateY(-1px); }
+.btn-o { background: var(--surface); color: var(--text-2); border: 1px solid var(--border); }
+.btn-o:hover { border-color: var(--border2); background: var(--raised); }
+.btn-ghost {
+  background: transparent; color: var(--text-3);
+  border: 1px solid var(--border); border-radius: 9px;
+  cursor: pointer; transition: all .18s ease; font-family: inherit;
+}
+.btn-ghost:hover { background: var(--raised); color: var(--text-2); border-color: var(--border2); }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 9px; font-family: inherit;
+  font-size: 13px; font-weight: 600; padding: 8px 16px; cursor: pointer;
+  box-shadow: 0 1px 4px rgba(13,148,136,.28);
+  transition: all .18s ease;
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+/* ── Input ─────────────────────────────────── */
+.inp {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--raised); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 0 14px; height: 38px;
+  transition: border-color .18s, box-shadow .18s;
+}
+.inp:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); background: var(--surface); }
+.inp input { flex:1; background:none; border:none; outline:none; font-size:13.5px; color:var(--text-1); font-family:inherit; letter-spacing:-.012em; }
+.inp input::placeholder { color: var(--text-3); }
+
+/* ── Table rows ────────────────────────────── */
+.row {
+  display: flex; align-items: center; padding: 13px 22px; gap: 14px;
+  border-bottom: 1px solid var(--border);
+  transition: background .14s ease; cursor: pointer;
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: var(--raised); }
+.row.sel { background: var(--accent-s); }
+.tbl-row { border-bottom: 1px solid var(--border); cursor: pointer; transition: background .14s ease; }
+.tbl-row:last-child { border-bottom: none; }
+.tbl-row:hover { background: var(--raised); }
+
+/* ── Dots ──────────────────────────────────── */
+.dot     { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-ok  { background: #10B981; box-shadow: 0 0 0 3px #D1FAE5; }
+.dot-warn{ background: #F59E0B; box-shadow: 0 0 0 3px #FEF3C7; }
+.dot-err { background: #EF4444; box-shadow: 0 0 0 3px #FEE2E2; }
+.dot-off { background: var(--text-3); box-shadow: 0 0 0 3px var(--raised); }
+
+/* ── Progress ──────────────────────────────── */
+.prog        { height: 4px; background: var(--border); border-radius: 9px; overflow: hidden; }
+.prog > div  { height: 100%; border-radius: 9px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+.prog-track  { height: 4px; background: var(--border); border-radius: 9px; overflow: hidden; }
+.prog-fill   { height: 100%; border-radius: 9px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+
+/* ── Labels ────────────────────────────────── */
+.sect { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
+
+/* ── Timeline ──────────────────────────────── */
+.tl-line { position: absolute; left: 13px; top: 14px; bottom: 0; width: 1px; background: var(--border); }
+
+/* ── Keyframes ─────────────────────────────── */
+@keyframes slideLeft {
+  from { opacity:0; transform:translateX(-8px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes sbSlide {
+  from { opacity:0; transform:translateX(-10px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes slideLeft { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+@keyframes scaleIn  { from{opacity:0;transform:scale(.86)} to{opacity:1;transform:scale(1)} }
+@keyframes pulse2   { 0%,100%{opacity:1} 50%{opacity:.25} }
+@keyframes breathe  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.7)} }
+@keyframes spin     { to{transform:rotate(360deg)} }
+
+.anim         { animation: fadeUp .28s cubic-bezier(.4,0,.2,1) both; }
+.anim-fade-up { animation: fadeUp .2s cubic-bezier(.4,0,.2,1) both; }
+.pulse        { animation: pulse2 2.4s ease-in-out infinite; }
+.breathe      { animation: breathe 2.4s ease-in-out infinite; }
+.animate-spin { animation: spin .85s linear infinite; }
+
+/* ── Utilities ─────────────────────────────── */
+.mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.trunc { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.divider { height:1px; background: var(--border); }
