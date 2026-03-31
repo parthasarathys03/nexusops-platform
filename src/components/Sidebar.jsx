@@ -57,17 +57,17 @@ const S_CLR = { ok: '#34D399', warn: '#FBBF24', off: '#6B7280' }
 
 /* ── colours live here, easy to change ── */
 const SB = {
-  bg:      '#2D6B63',   /* mid teal — light enough to feel open       */
-  border:  'rgba(255,255,255,.1)',
-  t1:      '#F0FAF9',   /* primary text     — near white              */
-  t2:      '#A8D5D0',   /* secondary text   — bright teal-white       */
-  t3:      '#5A9E98',   /* muted / labels                             */
-  actBg:   'rgba(13,148,136,.22)',  /* active row bg   */
-  actBar:  '#2DD4C8',               /* active left bar */
-  actIcon: '#5EEDE6',               /* active icon     */
-  actText: '#EDFAF9',               /* active text     */
-  hovBg:   'rgba(255,255,255,.08)',
-  hovIcon: '#C2E8E4',
+  bg:      '#22524D',   /* medium teal — not dark, not light, clearly branded */
+  border:  'rgba(255,255,255,.08)',
+  t1:      '#EDFAF9',   /* primary text   — crisp near-white          */
+  t2:      '#8ECBC6',   /* secondary text — soft teal-white           */
+  t3:      '#4A8F89',   /* muted labels                               */
+  actBg:   'rgba(255,255,255,.12)', /* active row bg  */
+  actBar:  '#5EEAD4',               /* active left bar */
+  actIcon: '#5EEAD4',               /* active icon     */
+  actText: '#FFFFFF',               /* active text     */
+  hovBg:   'rgba(255,255,255,.07)',
+  hovIcon: '#C2EDE9',
 }
 
 /* ── single nav button ── */
@@ -131,7 +131,7 @@ function Item({ item, active, onClick, showText, stagger }) {
             flex: 1,
             fontSize: 13.5,
             fontWeight: active ? 700 : 400,
-            color: active ? SB.actText : hov ? '#B8DAD6' : SB.t2,
+            color: active ? SB.actText : hov ? '#EDFAF9' : SB.t2,
             letterSpacing: '-.01em',
             lineHeight: 1,
             transition: 'color .18s ease',
@@ -146,7 +146,7 @@ function Item({ item, active, onClick, showText, stagger }) {
             <span style={{
               minWidth: 22, height: 18, borderRadius: 6, padding: '0 6px',
               fontSize: 10.5, fontWeight: 700,
-              background: active ? 'rgba(77,213,206,.2)' : 'rgba(107,158,153,.18)',
+              background: active ? 'rgba(94,234,212,.22)' : 'rgba(255,255,255,.1)',
               color: active ? SB.actIcon : SB.t2,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0,
@@ -250,14 +250,14 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
           onClick={toggle}
           style={{
             width: 26, height: 26, borderRadius: 7, flexShrink: 0,
-            background: 'rgba(255,255,255,.07)',
-            border: '1px solid rgba(255,255,255,.1)',
+            background: 'rgba(255,255,255,.1)',
+            border: '1px solid rgba(255,255,255,.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer',
             transition: 'background .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(13,148,136,.25)'; e.currentTarget.style.transform = 'scale(1.1)' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.07)'; e.currentTarget.style.transform = 'scale(1)' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.2)'; e.currentTarget.style.transform = 'scale(1.1)' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; e.currentTarget.style.transform = 'scale(1)' }}
         >
           {collapsed
             ? <TbChevronRight size={13} strokeWidth={2.2} color={SB.t2} />
@@ -376,13 +376,13 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
         >
           <div style={{
             width: 32, height: 32, borderRadius: 9, flexShrink: 0,
-            background: 'rgba(13,148,136,.25)',
+            background: 'rgba(255,255,255,.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, fontWeight: 800, color: '#5EDDD6',
+            fontSize: 11, fontWeight: 800, color: '#EDFAF9',
             transition: 'background .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
           }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(13,148,136,.38)'; e.currentTarget.style.transform = 'scale(1.07)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(13,148,136,.25)'; e.currentTarget.style.transform = 'scale(1)' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.25)'; e.currentTarget.style.transform = 'scale(1.07)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.15)'; e.currentTarget.style.transform = 'scale(1)' }}
           >
             JR
           </div>
