@@ -10,37 +10,45 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const PAGE_META = {
-  overview:  { label: 'Dashboard',             section: 'Operate' },
-  alerts:    { label: 'Alerts',                section: 'Operate' },
-  incidents: { label: 'Incidents',             section: 'Operate' },
-  rca:       { label: 'Root Cause Analysis',   section: 'Operate' },
-  reports:   { label: 'Reports',               section: 'Insights' },
-  settings:  { label: 'Settings',              section: 'Configure' },
-  profile:   { label: 'Profile',               section: 'Account' },
-  observe:   { label: 'Observe',               section: 'Monitor' },
-  insights:  { label: 'Insights',              section: 'Analytics' },
-  agents:    { label: 'Agents at Work',        section: 'AI' },
-  factory:   { label: 'AI Factory',            section: 'AI' },
-  security:  { label: 'Security & Governance', section: 'Compliance' },
+  overview: { label: 'Dashboard', section: 'Operate' },
+  alerts: { label: 'Alerts', section: 'Operate' },
+  incidents: { label: 'Incidents', section: 'Operate' },
+  rca: { label: 'Root Cause Analysis', section: 'Operate' },
+  reports: { label: 'Reports', section: 'Insights' },
+  settings: { label: 'Settings', section: 'Configure' },
+  profile: { label: 'Profile', section: 'Account' },
+  observe: { label: 'Observe', section: 'Monitor' },
+  insights: { label: 'Insights', section: 'Analytics' },
+  agents: { label: 'Agents at Work', section: 'AI' },
+  factory: { label: 'AI Factory', section: 'AI' },
+  security: { label: 'Security & Governance', section: 'Compliance' },
 };
 
-/* Shared style for all header icon-buttons */
-const iconBtn = {
-  base: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '34px',
-    height: '34px',
-    borderRadius: '8px',
-    background: 'transparent',
-    border: '1px solid var(--border-default)',
-    color: 'var(--text-tertiary)',
-    cursor: 'pointer',
-    transition: 'border-color 150ms cubic-bezier(0.25,0.46,0.45,0.94), color 150ms cubic-bezier(0.25,0.46,0.45,0.94), background 150ms cubic-bezier(0.25,0.46,0.45,0.94)',
-    flexShrink: 0,
-  },
+const controlBase = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '36px',
+  borderRadius: '10px',
+  border: '1px solid var(--border-default)',
+  background: 'var(--bg-surface)',
+  color: 'var(--text-secondary)',
+  cursor: 'pointer',
+  transition: 'border-color 140ms ease, background 140ms ease, color 140ms ease',
+  flexShrink: 0,
 };
+
+function hoverIn(e) {
+  e.currentTarget.style.borderColor = 'var(--border-strong)';
+  e.currentTarget.style.background = 'var(--bg-elevated)';
+  e.currentTarget.style.color = 'var(--text-primary)';
+}
+
+function hoverOut(e) {
+  e.currentTarget.style.borderColor = 'var(--border-default)';
+  e.currentTarget.style.background = 'var(--bg-surface)';
+  e.currentTarget.style.color = 'var(--text-secondary)';
+}
 
 export default function Header({ activePage, isDark, toggleTheme }) {
   const [notifCount] = useState(4);
@@ -52,29 +60,28 @@ export default function Header({ activePage, isDark, toggleTheme }) {
       style={{
         height: 'var(--header-h)',
         background: 'var(--bg-header)',
-        /* Premium separation — shadow reads as depth, not just a line */
+        borderBottom: '1px solid var(--border-default)',
         boxShadow: 'var(--shadow-header)',
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
-        padding: '0 20px 0 24px',
+        gap: '10px',
+        padding: '0 20px 0 22px',
         position: 'sticky',
         top: 0,
         zIndex: 30,
         flexShrink: 0,
       }}
     >
-      {/* ── Page title ───────────────────────────────── */}
-      <div style={{ marginRight: '4px' }}>
+      <div style={{ minWidth: '170px' }}>
         <p
           style={{
             fontSize: '10px',
-            fontWeight: 600,
-            letterSpacing: '0.09em',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--text-tertiary)',
             lineHeight: 1,
-            marginBottom: '3px',
+            marginBottom: '4px',
           }}
         >
           {meta.section}
@@ -82,9 +89,9 @@ export default function Header({ activePage, isDark, toggleTheme }) {
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '16px',
+            fontSize: '18px',
             fontWeight: 700,
-            letterSpacing: '-0.022em',
+            letterSpacing: '-0.02em',
             color: 'var(--text-primary)',
             lineHeight: 1,
           }}
@@ -93,73 +100,66 @@ export default function Header({ activePage, isDark, toggleTheme }) {
         </h1>
       </div>
 
-      {/* ── Spacer ───────────────────────────────────── */}
       <div style={{ flex: 1 }} />
 
-      {/* ── Search bar ───────────────────────────────── */}
       <label
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          gap: '7px',
           height: '34px',
-          width: '244px',
-          padding: '0 12px',
-          borderRadius: '8px',
-          background: 'var(--bg-elevated)',
-          border: `1px solid ${searchFocused ? 'var(--border-focus)' : 'var(--border-default)'}`,
-          boxShadow: searchFocused ? '0 0 0 3px var(--brand-violet-dim)' : 'none',
+          width: '260px',
+          padding: '0 10px',
+          borderRadius: '6px',
+          background: 'var(--bg-surface)',
+          border: `1px solid ${searchFocused ? 'var(--border-strong)' : 'var(--border-default)'}`,
           cursor: 'text',
-          transition: 'border-color 150ms ease, box-shadow 150ms ease',
+          transition: 'border-color 150ms ease',
           flexShrink: 0,
         }}
       >
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           style={{
-            width: '12px',
-            height: '12px',
-            color: searchFocused ? 'var(--brand-violet)' : 'var(--text-placeholder)',
+            width: '11px',
+            height: '11px',
+            color: 'var(--text-placeholder)',
             flexShrink: 0,
-            transition: 'color 150ms ease',
           }}
         />
         <input
-          placeholder="Search…"
+          placeholder="Search"
           onFocus={() => setSearchFocused(true)}
           onBlur={() => setSearchFocused(false)}
           style={{
             flex: 1,
+            minWidth: 0,
             background: 'transparent',
             border: 'none',
             outline: 'none',
-            fontSize: '12.5px',
+            fontSize: '13px',
             color: 'var(--text-primary)',
             fontFamily: 'inherit',
-            letterSpacing: '-0.01em',
           }}
         />
         <kbd
           style={{
-            fontSize: '10px',
-            fontWeight: 600,
-            color: 'var(--text-tertiary)',
-            background: 'var(--bg-subtle)',
-            border: '1px solid var(--border-default)',
-            borderRadius: '4px',
-            padding: '1px 5px',
-            lineHeight: 1.6,
+            fontSize: '11px',
+            color: 'var(--text-placeholder)',
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
             flexShrink: 0,
+            fontFamily: 'inherit',
           }}
         >
           ⌘K
         </kbd>
       </label>
 
-      {/* ── Time range ───────────────────────────────── */}
       <button
         style={{
-          ...iconBtn.base,
+          ...controlBase,
           width: 'auto',
           padding: '0 10px',
           gap: '6px',
@@ -167,122 +167,85 @@ export default function Header({ activePage, isDark, toggleTheme }) {
           fontWeight: 600,
           fontFamily: 'inherit',
           letterSpacing: '-0.01em',
-          color: 'var(--text-secondary)',
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-strong)';
-          e.currentTarget.style.background = 'var(--bg-elevated)';
-          e.currentTarget.style.color = 'var(--text-primary)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-default)';
-          e.currentTarget.style.background = 'transparent';
-          e.currentTarget.style.color = 'var(--text-secondary)';
-        }}
+        onMouseEnter={hoverIn}
+        onMouseLeave={hoverOut}
       >
         <FontAwesomeIcon icon={faClockRotateLeft} style={{ width: '11px', height: '11px' }} />
         Last 3h
-        <FontAwesomeIcon icon={faChevronDown} style={{ width: '8px', height: '8px', opacity: 0.55 }} />
+        <FontAwesomeIcon icon={faChevronDown} style={{ width: '8px', height: '8px', opacity: 0.6 }} />
       </button>
 
-      {/* ── Separator ────────────────────────────────── */}
       <div
         style={{
           width: '1px',
-          height: '20px',
+          height: '22px',
           background: 'var(--border-default)',
           flexShrink: 0,
         }}
       />
 
-      {/* ── Theme toggle ─────────────────────────────── */}
       <button
         onClick={toggleTheme}
         style={{
-          ...iconBtn.base,
-          color: isDark ? '#F59E0B' : '#411B7F',
-          background: isDark ? 'rgba(245,158,11,0.08)' : 'rgba(65,27,127,0.06)',
-          borderColor: isDark ? 'rgba(245,158,11,0.25)' : 'var(--border-brand)',
+          ...controlBase,
+          width: '36px',
+          color: 'var(--accent-primary)',
+          background: 'var(--accent-primary-subtle)',
+          borderColor: 'var(--border-brand)',
         }}
         title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = isDark ? 'rgba(245,158,11,0.5)' : '#411B7F';
-          e.currentTarget.style.background = isDark ? 'rgba(245,158,11,0.15)' : 'rgba(65,27,127,0.12)';
+          e.currentTarget.style.borderColor = 'var(--accent-primary)';
+          e.currentTarget.style.background = 'var(--accent-primary-muted)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = isDark ? 'rgba(245,158,11,0.25)' : 'var(--border-brand)';
-          e.currentTarget.style.background = isDark ? 'rgba(245,158,11,0.08)' : 'rgba(65,27,127,0.06)';
+          e.currentTarget.style.borderColor = 'var(--border-brand)';
+          e.currentTarget.style.background = 'var(--accent-primary-subtle)';
         }}
       >
-        <FontAwesomeIcon
-          icon={isDark ? faSun : faMoon}
-          style={{ width: '15px', height: '15px' }}
-        />
+        <FontAwesomeIcon icon={isDark ? faSun : faMoon} style={{ width: '14px', height: '14px' }} />
       </button>
 
-      {/* ── Notifications ────────────────────────────── */}
       <button
-        style={{ ...iconBtn.base, position: 'relative' }}
+        style={{ ...controlBase, width: '36px', position: 'relative' }}
         title="Notifications"
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-strong)';
-          e.currentTarget.style.background = 'var(--bg-elevated)';
-          e.currentTarget.style.color = 'var(--text-primary)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-default)';
-          e.currentTarget.style.background = 'transparent';
-          e.currentTarget.style.color = 'var(--text-tertiary)';
-        }}
+        onMouseEnter={hoverIn}
+        onMouseLeave={hoverOut}
       >
         <FontAwesomeIcon icon={faBell} style={{ width: '13px', height: '13px' }} />
         {notifCount > 0 && (
           <span
             style={{
               position: 'absolute',
-              top: '6px',
-              right: '6px',
+              top: '8px',
+              right: '8px',
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: '#DC2626',
-              boxShadow: '0 0 0 2px var(--bg-header)',
+              background: 'var(--color-error)',
+              boxShadow: '0 0 0 2px var(--bg-surface)',
             }}
           />
         )}
       </button>
 
-      {/* ── Profile button ───────────────────────────── */}
       <button
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          ...controlBase,
           gap: '8px',
-          height: '34px',
-          paddingLeft: '3px',
+          paddingLeft: '4px',
           paddingRight: '10px',
-          borderRadius: '8px',
-          background: 'transparent',
-          border: '1px solid var(--border-default)',
-          cursor: 'pointer',
-          transition: 'border-color 150ms ease, background 150ms ease',
-          flexShrink: 0,
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-strong)';
-          e.currentTarget.style.background = 'var(--bg-elevated)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-default)';
-          e.currentTarget.style.background = 'transparent';
-        }}
+        onMouseEnter={hoverIn}
+        onMouseLeave={hoverOut}
       >
         <div
           style={{
             width: '26px',
             height: '26px',
-            borderRadius: '7px',
-            background: 'linear-gradient(135deg, #411B7F, #FE6F5E)',
+            borderRadius: '8px',
+            background: 'var(--gradient-brand)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -298,16 +261,13 @@ export default function Header({ activePage, isDark, toggleTheme }) {
           style={{
             fontSize: '12.5px',
             fontWeight: 600,
-            color: 'var(--text-secondary)',
+            color: 'inherit',
             letterSpacing: '-0.01em',
           }}
         >
           Jane D.
         </span>
-        <FontAwesomeIcon
-          icon={faChevronDown}
-          style={{ width: '8px', height: '8px', color: 'var(--text-tertiary)' }}
-        />
+        <FontAwesomeIcon icon={faChevronDown} style={{ width: '8px', height: '8px', opacity: 0.65 }} />
       </button>
     </header>
   );
