@@ -101,7 +101,7 @@ export default function Overview() {
       <section
         style={{
           display: 'grid',
-          gridTemplateColumns: '1.15fr 0.85fr',
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
           gap: '12px',
           alignItems: 'start',
         }}

@@ -21,7 +21,7 @@
   --brand-coral:          #FE6F5E;
   --brand-coral-light:    #FF8A7A;
   --gradient-brand:       linear-gradient(135deg, #411B7F 0%, #FE6F5E 100%);
-  --gradient-brand-btn:   linear-gradient(135deg, #4E23A0 0%, #F96554 100%);
+  --gradient-brand-btn:   linear-gradient(135deg, rgba(78, 35, 160, 0.82) 0%, rgba(249, 101, 84, 0.82) 100%);
 
   /* ── Accent ─────────────────────────────────────── */
   --accent-primary:        #411B7F;
@@ -65,8 +65,8 @@
   /* ── Sidebar ────────────────────────────────────── */
   --sidebar-bg:             #EEEDF6;
   --sidebar-border:         #D0CCEB;
-  --sidebar-hover:          rgba(65, 27, 127, 0.09);
-  --sidebar-active:         rgba(65, 27, 127, 0.13);
+  --sidebar-hover:          rgba(0, 0, 0, 0.045);
+  --sidebar-active:         rgba(65, 27, 127, 0.09);
   --sidebar-active-text:    #21105A;
   --sidebar-icon-default:   #4E526B;
   --sidebar-icon-active:    #411B7F;

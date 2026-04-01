@@ -21,7 +21,9 @@ export function AlertRow({ alert, index = 0 }) {
       onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-subtle)')}
       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
     >
-      <SeverityBadge severity={alert.severity} />
+      <span style={{ width: '76px', flexShrink: 0, display: 'flex' }}>
+        <SeverityBadge severity={alert.severity} />
+      </span>
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{

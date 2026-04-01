@@ -10,7 +10,17 @@ export function DataTable({ columns, rows }) {
         border: '1px solid var(--border-default)',
       }}
     >
-      <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
+      <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }}>
+        <colgroup>
+          {columns.map((col, i) => (
+            <col
+              key={col.key}
+              style={{
+                width: i === 0 ? '22%' : i === 1 ? '22%' : i === 2 ? '20%' : i === 3 ? '18%' : '18%',
+              }}
+            />
+          ))}
+        </colgroup>
         <thead>
           <tr style={{ background: 'var(--bg-subtle)' }}>
             {columns.map((col) => (
@@ -22,10 +32,11 @@ export function DataTable({ columns, rows }) {
                   textTransform: 'uppercase',
                   letterSpacing: '0.07em',
                   color: 'var(--text-tertiary)',
-                  padding: '10px 16px',
+                  padding: '9px 12px',
                   textAlign: 'left',
                   borderBottom: '1px solid var(--border-default)',
                   whiteSpace: 'nowrap',
+                  overflow: 'hidden',
                 }}
               >
                 {col.title}
@@ -44,12 +55,15 @@ export function DataTable({ columns, rows }) {
                 <td
                   key={`${row.id}-${col.key}`}
                   style={{
-                    padding: '11px 16px',
-                    fontSize: '13px',
+                    padding: '10px 12px',
+                    fontSize: '12.5px',
                     color: 'var(--text-primary)',
                     borderBottom:
                       rowIdx < rows.length - 1 ? '1px solid var(--border-subtle)' : 'none',
                     fontWeight: colIdx === 0 ? 500 : 400,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {col.key === 'severity' ? (
