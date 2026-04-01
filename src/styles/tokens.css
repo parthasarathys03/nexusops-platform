@@ -1,0 +1,76 @@
+:root {
+  --bg-base: #050B18;
+  --bg-surface: #080F1F;
+  --bg-elevated: #0D1629;
+  --bg-overlay: #111E36;
+  --bg-subtle: #162038;
+  --bg-muted: #1C2B47;
+
+  --accent-primary: #2D7EFF;
+  --accent-primary-hover: #4A93FF;
+  --accent-primary-muted: #1A4A99;
+  --accent-primary-glow: rgba(45,126,255,0.20);
+  --accent-primary-subtle: rgba(45,126,255,0.08);
+
+  --accent-secondary: #00C8E8;
+  --accent-secondary-hover: #33D6F0;
+  --accent-secondary-muted: #006F80;
+  --accent-secondary-glow: rgba(0,200,232,0.18);
+  --accent-secondary-subtle: rgba(0,200,232,0.07);
+
+  --color-success: #10B981;
+  --color-success-muted: rgba(16,185,129,0.12);
+  --color-success-glow: rgba(16,185,129,0.25);
+  --color-warning: #F59E0B;
+  --color-warning-muted: rgba(245,158,11,0.12);
+  --color-warning-glow: rgba(245,158,11,0.25);
+  --color-error: #EF4444;
+  --color-error-muted: rgba(239,68,68,0.12);
+  --color-error-glow: rgba(239,68,68,0.25);
+  --color-info: #6366F1;
+  --color-info-muted: rgba(99,102,241,0.12);
+
+  --severity-critical: #FF3B30;
+  --severity-high: #FF6B35;
+  --severity-medium: #F59E0B;
+  --severity-low: #10B981;
+  --severity-info: #2D7EFF;
+
+  --text-primary: #F0F4FF;
+  --text-secondary: #8B9DC3;
+  --text-tertiary: #4A5A7A;
+  --text-disabled: #2D3A52;
+  --text-accent: #2D7EFF;
+  --text-inverse: #050B18;
+
+  --border-subtle: rgba(255,255,255,0.04);
+  --border-default: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --border-accent: rgba(45,126,255,0.35);
+  --border-accent-2: rgba(0,200,232,0.30);
+
+  --gradient-sidebar: linear-gradient(160deg, #080F1F 0%, #050B18 60%, #060D1C 100%);
+  --gradient-card: linear-gradient(135deg, #0D1629 0%, #080F1F 100%);
+  --gradient-accent-cta: linear-gradient(135deg, #1A4FCC 0%, #2D7EFF 50%, #00C8E8 100%);
+
+  --sidebar-bg: #060C1A;
+  --sidebar-border: rgba(45,126,255,0.12);
+  --sidebar-item-hover: rgba(45,126,255,0.08);
+  --sidebar-item-active: rgba(45,126,255,0.14);
+  --sidebar-item-active-border: #2D7EFF;
+  --sidebar-icon-default: #4A5A7A;
+  --sidebar-icon-hover: #8B9DC3;
+  --sidebar-icon-active: #2D7EFF;
+  --sidebar-text-default: #6B7FA8;
+  --sidebar-text-active: #F0F4FF;
+  --sidebar-width-open: 240px;
+  --sidebar-width-closed: 64px;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+  --shadow-accent: 0 0 20px rgba(45,126,255,0.20), 0 0 60px rgba(45,126,255,0.08);
+  --shadow-modal: 0 8px 48px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5);
+
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}

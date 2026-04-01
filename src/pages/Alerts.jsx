@@ -1,224 +1,62 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faMagnifyingGlass,
-  faFilter,
-  faChevronDown,
-  faXmark,
-  faEye,
-  faClock,
-  faCircleCheck,
-  faBolt,
-  faArrowUpRightFromSquare,
-  faMessage,
-} from '@fortawesome/free-solid-svg-icons'
+import { useMemo, useState } from 'react';
+import PageContainer from '../components/layout/PageContainer';
+import { AlertRow } from '../components/ui/AlertRow';
 
-const SEV = {
-  critical: { l: 'Critical', c: 'var(--danger)', bg: 'var(--danger-s)', dot: 'dot-err' },
-  high: { l: 'High', c: 'var(--warn)', bg: 'var(--warn-s)', dot: 'dot-warn' },
-  medium: { l: 'Medium', c: 'var(--text-2)', bg: 'var(--raised)', dot: 'dot-off' },
-  low: { l: 'Low', c: 'var(--ok)', bg: 'var(--ok-s)', dot: 'dot-ok' },
-}
+const ALERTS = [
+  { id: 1, severity: 'critical', title: 'Payment Gateway - DB Connection Pool Exhausted', source: 'Datadog', service: 'payment-service', timestamp: '2m ago' },
+  { id: 2, severity: 'critical', title: 'prod-api-07 CPU Utilization 94%', source: 'Prometheus', service: 'api-gateway', timestamp: '9m ago' },
+  { id: 3, severity: 'high', title: 'Checkout Service HTTP 5xx Rate 8.7%', source: 'New Relic', service: 'checkout-service', timestamp: '11m ago' },
+  { id: 4, severity: 'high', title: 'PostgreSQL replica lag 2m 14s', source: 'Zabbix', service: 'postgres-cluster', timestamp: '14m ago' },
+  { id: 5, severity: 'medium', title: 'Auth Service Token Latency p99 820ms', source: 'Grafana', service: 'auth-service', timestamp: '20m ago' },
+  { id: 6, severity: 'low', title: 'Scheduled job nightly-report-gen failed', source: 'Splunk', service: 'job-scheduler', timestamp: '33m ago' },
+];
 
-const ROWS = [
-  { id: 'ALT-4821', sev: 'critical', st: 'firing', title: 'Payment Gateway - DB Connection Pool Exhausted', svc: 'payment-service', src: 'Datadog', dur: '32m', assignee: 'M. Chen' },
-  { id: 'ALT-4820', sev: 'critical', st: 'firing', title: 'prod-api-07 CPU Utilization 94%', svc: 'api-gateway', src: 'Prometheus', dur: '18m', assignee: null },
-  { id: 'ALT-4819', sev: 'critical', st: 'ack', title: 'Checkout Service HTTP 5xx Rate 8.7%', svc: 'checkout-service', src: 'New Relic', dur: '41m', assignee: 'J. Rivera' },
-  { id: 'ALT-4818', sev: 'critical', st: 'firing', title: 'PostgreSQL Replica Lag 2m 14s', svc: 'postgres-cluster', src: 'Zabbix', dur: '55m', assignee: null },
-  { id: 'ALT-4817', sev: 'high', st: 'firing', title: 'Redis cache-cluster-03 Memory 87%', svc: 'redis-cache', src: 'Dynatrace', dur: '1h 12m', assignee: 'T. Okonkwo' },
-  { id: 'ALT-4816', sev: 'high', st: 'firing', title: 'SolarWinds Integration Latency 190ms', svc: 'monitoring-infra', src: 'SolarWinds', dur: '2h 3m', assignee: null },
-  { id: 'ALT-4815', sev: 'high', st: 'ack', title: 'SSL Certificate Expiry in 14 days', svc: 'cert-manager', src: 'Checkmk', dur: '4h 38m', assignee: 'DevOps' },
-  { id: 'ALT-4814', sev: 'high', st: 'firing', title: 'Load Balancer - 3/12 Hosts Unhealthy', svc: 'load-balancer', src: 'AppDynamics', dur: '28m', assignee: null },
-  { id: 'ALT-4813', sev: 'medium', st: 'firing', title: 'Elasticsearch Disk Usage 78%', svc: 'elastic-cluster', src: 'Elastic (ELK)', dur: '6h 20m', assignee: null },
-  { id: 'ALT-4812', sev: 'medium', st: 'ack', title: 'Auth Service Token Latency p99 820ms', svc: 'auth-service', src: 'Grafana', dur: '3h 45m', assignee: 'S. Patel' },
-  { id: 'ALT-4811', sev: 'medium', st: 'firing', title: 'Nagios Agent Offline - DC-East', svc: 'nagios-agent', src: 'Nagios', dur: '3h 14m', assignee: null },
-  { id: 'ALT-4810', sev: 'medium', st: 'firing', title: 'Search Service Cache Miss Rate 63%', svc: 'search-service', src: 'New Relic', dur: '1h 52m', assignee: null },
-  { id: 'ALT-4809', sev: 'low', st: 'firing', title: 'Scheduled Job nightly-report-gen Failed', svc: 'job-scheduler', src: 'Splunk', dur: '8h', assignee: null },
-  { id: 'ALT-4808', sev: 'low', st: 'ack', title: 'Staging Disk Inode Usage 71%', svc: 'staging-env', src: 'Site24x7', dur: '12h 30m', assignee: 'Platform' },
-  { id: 'ALT-4807', sev: 'low', st: 'firing', title: 'ManageEngine Inventory Sync Delayed 2h', svc: 'asset-mgmt', src: 'ManageEngine', dur: '2h 15m', assignee: null },
-]
+const FILTERS = ['all', 'critical', 'high', 'medium', 'low'];
 
 export default function Alerts() {
-  const [q, setQ] = useState('')
-  const [sevTab, setSevTab] = useState('all')
-  const [statusTab, setStatusTab] = useState('all')
-  const [sel, setSel] = useState(null)
+  const [query, setQuery] = useState('');
+  const [severity, setSeverity] = useState('all');
 
-  const cnt = { critical: 4, high: 4, medium: 4, low: 3 }
-
-  const list = ROWS.filter((r) => {
-    if (sevTab !== 'all' && r.sev !== sevTab) return false
-    if (statusTab !== 'all' && r.st !== statusTab) return false
-    if (q && !r.title.toLowerCase().includes(q.toLowerCase())) return false
-    return true
-  })
+  const list = useMemo(() => ALERTS.filter((row) => {
+    if (severity !== 'all' && row.severity !== severity) return false;
+    if (query && !`${row.title} ${row.service}`.toLowerCase().includes(query.toLowerCase())) return false;
+    return true;
+  }), [query, severity]);
 
   return (
-    <div className="anim" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
-        {['critical', 'high', 'medium', 'low'].map((s) => {
-          const cfg = SEV[s]
-          const active = sevTab === s
-          return (
+    <PageContainer>
+      <section className="app-card p-4 mb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search alerts by title or service"
+            className="h-10 px-3 rounded-lg w-full md:w-[320px] bg-transparent"
+            style={{ border: '1px solid var(--border-default)', color: 'var(--text-primary)', background: 'var(--bg-elevated)' }}
+          />
+          {FILTERS.map((filter) => (
             <button
-              key={s}
-              className="card card-h"
-              onClick={() => setSevTab(active ? 'all' : s)}
+              key={filter}
+              onClick={() => setSeverity(filter)}
+              className="h-9 px-3 rounded-lg text-[12px] uppercase tracking-wide"
               style={{
-                padding: '14px 18px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 14,
-                cursor: 'pointer',
-                textAlign: 'left',
-                borderColor: active ? 'var(--accent-b)' : 'var(--border)',
-                background: active ? 'var(--accent-s)' : 'var(--surface)',
+                border: '1px solid var(--border-default)',
+                background: severity === filter ? 'var(--accent-primary-subtle)' : 'var(--bg-elevated)',
+                color: severity === filter ? 'var(--accent-primary)' : 'var(--text-secondary)',
               }}
             >
-              <div className={cfg.dot} />
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 800, color: cfg.c, lineHeight: 1, letterSpacing: '-.5px' }}>{cnt[s]}</div>
-                <div className="sect" style={{ marginTop: 2 }}>{cfg.l}</div>
-              </div>
+              {filter}
             </button>
-          )
-        })}
-      </div>
-
-      <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 20px', borderBottom: '1px solid var(--border)' }}>
-          <div className="inp" style={{ flex: 1, maxWidth: 300 }}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: 13, color: 'var(--text-3)' }} />
-            <input placeholder="Search alerts..." value={q} onChange={(e) => setQ(e.target.value)} />
-            {q && (
-              <button onClick={() => setQ('')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <FontAwesomeIcon icon={faXmark} style={{ fontSize: 12, color: 'var(--text-3)' }} />
-              </button>
-            )}
-          </div>
-
-          <div style={{ display: 'flex', gap: 2, background: 'var(--raised)', borderRadius: 7, padding: 3, border: '1px solid var(--border)' }}>
-            {[{ id: 'all', l: `All (${ROWS.length})` }, { id: 'firing', l: 'Firing' }, { id: 'ack', l: "Ack'd" }].map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setStatusTab(t.id)}
-                style={{
-                  padding: '4px 12px',
-                  borderRadius: 5,
-                  fontSize: 12,
-                  fontWeight: statusTab === t.id ? 600 : 500,
-                  background: statusTab === t.id ? 'var(--surface)' : 'transparent',
-                  color: statusTab === t.id ? 'var(--text-1)' : 'var(--text-3)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  boxShadow: statusTab === t.id ? '0 1px 3px rgba(0,0,0,.2)' : 'none',
-                }}
-              >
-                {t.l}
-              </button>
-            ))}
-          </div>
-
-          <div style={{ flex: 1 }} />
-          <button className="btn btn-o"><FontAwesomeIcon icon={faFilter} style={{ fontSize: 12 }} />Filters<FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 11 }} /></button>
-          <button className="btn btn-a"><FontAwesomeIcon icon={faBolt} style={{ fontSize: 12 }} />Run Playbook</button>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 110px 70px 70px 80px 50px', gap: 12, padding: '8px 20px', background: 'var(--raised)', borderBottom: '1px solid var(--border)' }}>
-          {['Severity', 'Alert · Service', 'Source', 'Duration', 'Status', 'Assignee', ''].map((h, i) => (
-            <span key={i} className="sect" style={{ fontSize: 10 }}>{h}</span>
           ))}
         </div>
+      </section>
 
-        <div style={{ maxHeight: 520, overflowY: 'auto' }}>
-          {list.map((r) => {
-            const cfg = SEV[r.sev]
-            const isSel = sel?.id === r.id
-            return (
-              <div
-                key={r.id}
-                className={`row ${isSel ? 'sel' : ''}`}
-                style={{ display: 'grid', gridTemplateColumns: '80px 1fr 110px 70px 70px 80px 50px', gap: 12, borderLeft: isSel ? '3px solid var(--accent)' : '3px solid transparent' }}
-                onClick={() => setSel(isSel ? null : r)}
-              >
-                <span className="pill" style={{ background: cfg.bg, color: cfg.c, fontSize: 10, alignSelf: 'center', justifySelf: 'start' }}>
-                  <div className={cfg.dot} style={{ width: 5, height: 5 }} />{cfg.l}
-                </span>
-
-                <div style={{ minWidth: 0 }}>
-                  <p className="trunc" style={{ fontSize: 12, fontWeight: 600 }}>{r.title}</p>
-                  <p className="mono trunc" style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 1 }}>{r.svc}</p>
-                </div>
-
-                <span style={{ fontSize: 11, color: 'var(--text-2)' }}>{r.src}</span>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <FontAwesomeIcon icon={faClock} style={{ fontSize: 11, color: 'var(--text-3)' }} />
-                  <span className="mono" style={{ fontSize: 11, color: 'var(--text-2)' }}>{r.dur}</span>
-                </div>
-
-                <span
-                  className="pill"
-                  style={{
-                    background: r.st === 'firing' ? 'var(--danger-s)' : 'var(--ok-s)',
-                    color: r.st === 'firing' ? 'var(--danger)' : 'var(--ok)',
-                    fontSize: 10,
-                    alignSelf: 'center',
-                    justifySelf: 'start',
-                  }}
-                >
-                  {r.st === 'firing' && <div className="dot-err pulse" style={{ width: 4, height: 4 }} />}
-                  {r.st === 'firing' ? 'FIRING' : "ACK'D"}
-                </span>
-
-                <span style={{ fontSize: 11, color: r.assignee ? 'var(--text-2)' : 'var(--text-3)' }}>{r.assignee || '-'}</span>
-
-                <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-                  <button style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                    <FontAwesomeIcon icon={faEye} style={{ fontSize: 11, color: 'var(--text-3)' }} />
-                  </button>
-                </div>
-              </div>
-            )
-          })}
-
-          {list.length === 0 && (
-            <div style={{ padding: 48, textAlign: 'center' }}>
-              <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize: 32, color: 'var(--ok)' }} />
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-2)', marginTop: 12 }}>No alerts match</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {sel && (
-        <div className="card anim" style={{ padding: 20 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div>
-              <span className="mono" style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)' }}>{sel.id}</span>
-              <h3 style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{sel.title}</h3>
-            </div>
-            <button onClick={() => setSel(null)} style={{ width: 28, height: 28, borderRadius: 7, border: '1px solid var(--border)', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <FontAwesomeIcon icon={faXmark} style={{ fontSize: 13, color: 'var(--text-3)' }} />
-            </button>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
-            {[{ l: 'Service', v: sel.svc }, { l: 'Source', v: sel.src }, { l: 'Duration', v: sel.dur }, { l: 'Status', v: sel.st }, { l: 'Assignee', v: sel.assignee || 'Unassigned' }].map((d) => (
-              <div key={d.l}>
-                <div className="sect" style={{ marginBottom: 4 }}>{d.l}</div>
-                <div style={{ fontSize: 13, fontWeight: 600 }}>{d.v}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-            <button className="btn btn-a"><FontAwesomeIcon icon={faCircleCheck} style={{ fontSize: 12 }} />Acknowledge</button>
-            <button className="btn btn-o"><FontAwesomeIcon icon={faMessage} style={{ fontSize: 12 }} />Comment</button>
-            <button className="btn btn-o"><FontAwesomeIcon icon={faArrowUpRightFromSquare} style={{ fontSize: 12 }} />Open Source</button>
-            <div style={{ flex: 1 }} />
-            <button className="btn btn-a"><FontAwesomeIcon icon={faBolt} style={{ fontSize: 12 }} />AI - Run RCA</button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
+      <section className="app-card p-2">
+        {list.map((alert, index) => (
+          <AlertRow key={alert.id} alert={alert} index={index} />
+        ))}
+        {list.length === 0 ? <p className="text-center py-10 text-[13px]" style={{ color: 'var(--text-tertiary)' }}>No alerts match current filters.</p> : null}
+      </section>
+    </PageContainer>
+  );
 }
