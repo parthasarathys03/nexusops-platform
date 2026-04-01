@@ -15,7 +15,7 @@ const ACTIONS = [
 export default function RootCauseAnalysis() {
   return (
     <PageContainer>
-      <section className="app-card p-6 mb-4" style={{ background: 'linear-gradient(135deg, rgba(45,126,255,0.12) 0%, rgba(0,200,232,0.08) 100%)' }}>
+      <section className="app-card p-6 mb-4">
         <p className="label-section mb-2">AI Root Cause Analysis</p>
         <h2 className="text-[20px] font-semibold mb-2">Deployment-triggered schema migration caused DB saturation and service timeout cascade</h2>
         <div className="flex flex-wrap gap-2 text-[11px]">

@@ -13,7 +13,12 @@ import './styles/animations.css';
 config.autoAddCss = false;
 library.add(fas, far);
 
-document.documentElement.classList.add('dark');
+// Light mode is the primary experience — dark class NOT set by default.
+// Theme toggle in App.jsx manages the 'dark' class via localStorage.
+const saved = localStorage.getItem('sentra-theme');
+if (saved === 'dark') {
+  document.documentElement.classList.add('dark');
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -1,26 +1,9 @@
-@keyframes shimmer-sweep {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
 @keyframes soft-fade-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.sidebar-shimmer {
-  background:
-    linear-gradient(160deg, #080F1F 0%, #050B18 100%),
-    linear-gradient(90deg,
-      transparent 0%,
-      rgba(45,126,255,0.03) 40%,
-      rgba(45,126,255,0.06) 50%,
-      rgba(45,126,255,0.03) 60%,
-      transparent 100%);
-  background-size: 100% 100%, 200% 100%;
-  animation: shimmer-sweep 8s linear infinite;
-}
-
+/* Single source of truth — also defined in globals.css for @layer utilities */
 .fade-in-up {
-  animation: soft-fade-up 260ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: soft-fade-up 210ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }

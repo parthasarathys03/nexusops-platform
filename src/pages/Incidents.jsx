@@ -40,7 +40,7 @@ export default function Incidents() {
       <section className="app-card p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-[16px] font-semibold">Incident Queue</h2>
-          <button className="h-9 px-3 rounded-lg text-[12px] font-medium" style={{ background: 'var(--gradient-accent-cta)', color: 'white', border: 'none' }}>Declare Incident</button>
+          <button className="btn-gradient text-[12px]">Declare Incident</button>
         </div>
         <DataTable columns={COLUMNS} rows={ROWS} />
       </section>
