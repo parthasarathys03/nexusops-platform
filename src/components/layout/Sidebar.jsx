@@ -124,9 +124,9 @@ function NavItem({ item, isActive, collapsed, onClick }) {
         paddingRight: collapsed ? 0 : '10px',
         justifyContent: collapsed ? 'center' : 'flex-start',
         background: isActive
-          ? 'rgba(65,27,127,0.12)'
+          ? 'var(--sidebar-active)'
           : hovered && enabled
-          ? 'rgba(65,27,127,0.07)'
+          ? 'var(--sidebar-hover)'
           : 'transparent',
         cursor: enabled ? 'pointer' : 'default',
         opacity: enabled ? 1 : 0.4,
@@ -152,7 +152,7 @@ function NavItem({ item, isActive, collapsed, onClick }) {
               width: '2px',
               height: '20px',
               borderRadius: '0 2px 2px 0',
-              background: '#411B7F',
+              background: 'var(--accent-primary)',
               transformOrigin: 'center',
               pointerEvents: 'none',
             }}
@@ -176,8 +176,8 @@ function NavItem({ item, isActive, collapsed, onClick }) {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: '#411B7F',
-              boxShadow: '0 0 6px rgba(65,27,127,0.7)',
+              background: 'var(--accent-primary)',
+              boxShadow: '0 0 6px var(--accent-primary)',
               pointerEvents: 'none',
             }}
           />
@@ -191,9 +191,9 @@ function NavItem({ item, isActive, collapsed, onClick }) {
           width: '16px',
           height: '16px',
           color: isActive
-            ? '#411B7F'
+            ? 'var(--sidebar-icon-active)'
             : hovered && enabled
-            ? '#411B7F'
+            ? 'var(--accent-primary)'
             : 'var(--sidebar-icon-default)',
           transition: 'color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
@@ -338,11 +338,11 @@ function CollapseToggle({ collapsed, setCollapsed }) {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 50,
-        background: hovered ? '#411B7F' : 'var(--bg-surface)',
-        border: hovered ? '1.5px solid #411B7F' : '1.5px solid var(--border-strong)',
+        background: hovered ? 'var(--accent-primary)' : 'var(--bg-surface)',
+        border: hovered ? '1.5px solid var(--accent-primary)' : '1.5px solid var(--border-strong)',
         color: hovered ? '#fff' : 'var(--text-secondary)',
         boxShadow: hovered
-          ? '0 2px 10px rgba(65,27,127,0.35), 0 0 0 3px rgba(65,27,127,0.10)'
+          ? '0 2px 10px var(--accent-primary-muted), 0 0 0 3px var(--accent-primary-subtle)'
           : '0 2px 6px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)',
         cursor: 'pointer',
         transition: 'background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease',
@@ -379,8 +379,8 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
           top: 0,
           bottom: 0,
           width: '2px',
-          background: 'linear-gradient(180deg, transparent 0%, #411B7F 12%, #FE6F5E 88%, transparent 100%)',
-          opacity: 0.65,
+          background: 'linear-gradient(180deg, transparent 0%, var(--accent-primary) 12%, var(--accent-secondary) 88%, transparent 100%)',
+          opacity: 0.55,
           zIndex: 10,
           pointerEvents: 'none',
         }}

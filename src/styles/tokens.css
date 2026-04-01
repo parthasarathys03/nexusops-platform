@@ -111,75 +111,77 @@
 
 /* ═══════════════════════════════════════════════════════
    DARK MODE
-   Warm navy — closer to Linear than generic dark gray
+   Near-black neutral — Claude-style, no blue tint
    ═══════════════════════════════════════════════════════ */
 
 html.dark {
-  /* Tighter step between layers — less contrast = calmer, more premium */
-  --bg-base:        #0D1119;
-  --bg-surface:     #121A28;
-  --bg-elevated:    #172030;
-  --bg-overlay:     #1B2638;
-  --bg-subtle:      #1C2738;
-  --bg-muted:       #233040;
-  --bg-header:      #0F1623;
+  /* Stepped neutral near-black — same palette family as Claude */
+  --bg-base:        #111113;
+  --bg-surface:     #18181b;
+  --bg-elevated:    #1f1f22;
+  --bg-overlay:     #27272a;
+  --bg-subtle:      #2c2c2f;
+  --bg-muted:       #3a3a3d;
+  --bg-header:      #111113;
 
-  --brand-violet:         #8B68C8;
-  --brand-violet-light:   #A07ED8;
-  --brand-violet-dim:     rgba(139, 104, 200, 0.10);
-  --gradient-brand-btn:   linear-gradient(135deg, #6B42B8 0%, #F96554 100%);
+  --brand-violet:         #a78bfa;
+  --brand-violet-light:   #c4b5fd;
+  --brand-violet-dim:     rgba(167, 139, 250, 0.10);
+  --gradient-brand-btn:   linear-gradient(135deg, #7c3aed 0%, #f96554 100%);
 
-  --accent-primary:        #8B68C8;
-  --accent-primary-hover:  #9B7AD8;
-  --accent-primary-subtle: rgba(139, 104, 200, 0.10);
-  --accent-primary-muted:  rgba(139, 104, 200, 0.16);
+  --accent-primary:        #a78bfa;
+  --accent-primary-hover:  #c4b5fd;
+  --accent-primary-subtle: rgba(167, 139, 250, 0.10);
+  --accent-primary-muted:  rgba(167, 139, 250, 0.16);
   --accent-secondary:      #FF8A7A;
   --accent-secondary-subtle: rgba(255, 138, 122, 0.10);
 
-  /* Strong, readable hierarchy on dark navy */
-  --text-primary:      #E4EAF4;
-  --text-secondary:    #A0B0C8;
-  --text-tertiary:     #6E84A0;
-  --text-placeholder:  #4A6180;
-  --text-brand:        #B08EDE;
+  /* Clean neutral hierarchy — no blue cast */
+  --text-primary:      #fafafa;
+  --text-secondary:    #a1a1aa;
+  --text-tertiary:     #71717a;
+  --text-placeholder:  #52525b;
+  --text-brand:        #c4b5fd;
 
-  /* Visible borders — calmer dark mode but still readable */
+  /* Subtle borders — just enough to separate surfaces */
   --border-subtle:  rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.10);
-  --border-strong:  rgba(255, 255, 255, 0.16);
-  --border-brand:   rgba(139, 104, 200, 0.28);
-  --border-focus:   rgba(139, 104, 200, 0.45);
+  --border-default: rgba(255, 255, 255, 0.09);
+  --border-strong:  rgba(255, 255, 255, 0.15);
+  --border-brand:   rgba(167, 139, 250, 0.30);
+  --border-focus:   rgba(167, 139, 250, 0.50);
 
-  --color-success:       #10B981;
-  --color-success-muted: rgba(16, 185, 129, 0.11);
-  --color-warning:       #F59E0B;
-  --color-warning-muted: rgba(245, 158, 11, 0.11);
-  --color-error:         #F43F5E;
-  --color-error-muted:   rgba(244, 63, 94, 0.11);
+  --color-success:       #34d399;
+  --color-success-muted: rgba(52, 211, 153, 0.10);
+  --color-warning:       #fbbf24;
+  --color-warning-muted: rgba(251, 191, 36, 0.10);
+  --color-error:         #f87171;
+  --color-error-muted:   rgba(248, 113, 113, 0.10);
+  --color-info:          #a78bfa;
 
-  --severity-critical: #F87171;
-  --severity-high:     #FB923C;
-  --severity-medium:   #FBBF24;
-  --severity-low:      #34D399;
-  --severity-info:     #A07ED8;
+  --severity-critical: #f87171;
+  --severity-high:     #fb923c;
+  --severity-medium:   #fbbf24;
+  --severity-low:      #34d399;
+  --severity-info:     #a78bfa;
 
-  --sidebar-bg:             #0B1120;
-  --sidebar-border:         rgba(255, 255, 255, 0.08);
-  --sidebar-hover:          rgba(139, 104, 200, 0.12);
-  --sidebar-active:         rgba(139, 104, 200, 0.18);
-  --sidebar-active-text:    #C4A8F0;
-  --sidebar-icon-default:   #6E84A0;
-  --sidebar-icon-active:    #B08EDE;
-  --sidebar-text-default:   #8CA5C4;
-  --sidebar-text-active:    #C4A8F0;
-  --sidebar-section-label:  #4E6882;
+  /* Sidebar — same near-black, clean neutral active states */
+  --sidebar-bg:             #111113;
+  --sidebar-border:         rgba(255, 255, 255, 0.07);
+  --sidebar-hover:          rgba(255, 255, 255, 0.05);
+  --sidebar-active:         rgba(255, 255, 255, 0.08);
+  --sidebar-active-text:    #fafafa;
+  --sidebar-icon-default:   #71717a;
+  --sidebar-icon-active:    #fafafa;
+  --sidebar-text-default:   #a1a1aa;
+  --sidebar-text-active:    #fafafa;
+  --sidebar-section-label:  #52525b;
 
-  --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.22);
-  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.28);
-  --shadow-card:   0 1px 3px rgba(0, 0, 0, 0.28);
-  --shadow-card-prominent: 0 1px 3px rgba(0, 0, 0, 0.30), 0 4px 14px rgba(0, 0, 0, 0.22);
-  --shadow-hover:  0 2px 10px rgba(0, 0, 0, 0.32), 0 8px 24px rgba(0, 0, 0, 0.22);
-  --shadow-header: 0 1px 0 rgba(255,255,255,0.04);
-  --shadow-modal:  0 4px 28px rgba(0, 0, 0, 0.48);
-  --shadow-sidebar: 1px 0 0 rgba(255,255,255,0.06);
+  --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.50);
+  --shadow-card:   0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-card-prominent: 0 1px 2px rgba(0, 0, 0, 0.50);
+  --shadow-hover:  0 2px 12px rgba(0, 0, 0, 0.55);
+  --shadow-header: 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-modal:  0 8px 32px rgba(0, 0, 0, 0.65);
+  --shadow-sidebar: 1px 0 0 rgba(255, 255, 255, 0.06);
 }
