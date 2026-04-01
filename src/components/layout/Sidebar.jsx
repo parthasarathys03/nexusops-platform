@@ -395,30 +395,48 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
 
       {/* ── Logo ──────────────────────────────────── */}
       <div
-        className="flex-shrink-0 flex items-center justify-center"
+        className="flex-shrink-0 flex items-center"
         style={{
           height: 'var(--header-h)',
           borderBottom: '1px solid var(--sidebar-border)',
-          padding: '0 12px',
+          padding: collapsed ? '0' : '0 14px',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          gap: 10,
+          transition: 'padding 280ms cubic-bezier(0.25,0.46,0.45,0.94)',
         }}
       >
-        <div
+        {/* Raw logo — no card wrapper, just the image */}
+        <img
+          src="/sentra 1.png"
+          alt="Sentra"
           style={{
-            width: collapsed ? 44 : 48,
-            height: collapsed ? 44 : 48,
-            borderRadius: 12,
-            overflow: 'hidden',
+            width: 52,
+            height: 52,
+            objectFit: 'contain',
+            display: 'block',
             flexShrink: 0,
-            boxShadow: '0 2px 8px rgba(65,27,127,0.25)',
-            transition: 'width 280ms cubic-bezier(0.25,0.46,0.45,0.94), height 280ms cubic-bezier(0.25,0.46,0.45,0.94)',
+            filter: 'drop-shadow(0 2px 6px rgba(65,27,127,0.22))',
           }}
-        >
-          <img
-            src="/sentra 1.png"
-            alt="Sentra"
-            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
-          />
-        </div>
+        />
+
+        {/* "Powered by" label — slides out on collapse */}
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.07, duration: 0.18, ease: EASE } }}
+              exit={{ opacity: 0, x: -8, transition: { duration: 0.13, ease: EASE } }}
+              style={{ overflow: 'hidden', whiteSpace: 'nowrap', lineHeight: 1.3 }}
+            >
+              <p style={{ fontSize: '9px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.11em', color: 'var(--sidebar-section-label)', marginBottom: '1px' }}>
+                Powered by
+              </p>
+              <p style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '-0.01em', color: 'var(--sidebar-active-text)', fontFamily: 'var(--font-display)' }}>
+                DecisionMinds
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* ── Navigation ─────────────────────────────── */}
