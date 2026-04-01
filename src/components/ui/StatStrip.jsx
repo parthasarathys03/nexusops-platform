@@ -11,7 +11,7 @@ export function StatStrip({ stats }) {
       className="app-card"
       style={{
         display: 'flex',
-        marginBottom: 20,
+        marginBottom: 16,
         overflow: 'hidden',
         padding: 0,
       }}
@@ -21,7 +21,7 @@ export function StatStrip({ stats }) {
           key={s.label}
           style={{
             flex: 1,
-            padding: '18px 24px',
+            padding: '15px 22px',
             borderRight: i < stats.length - 1 ? '1px solid var(--border-subtle)' : 'none',
           }}
         >
@@ -29,16 +29,16 @@ export function StatStrip({ stats }) {
             fontSize: '10px',
             fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: '0.09em',
+            letterSpacing: '0.1em',
             color: 'var(--text-tertiary)',
-            marginBottom: 7,
+            marginBottom: 5,
           }}>
             {s.label}
           </p>
           <p style={{
             fontFamily: 'var(--font-mono)',
             fontFeatureSettings: "'tnum'",
-            fontSize: '1.65rem',
+            fontSize: '1.5rem',
             fontWeight: 800,
             letterSpacing: '-0.04em',
             lineHeight: 1,
@@ -47,7 +47,7 @@ export function StatStrip({ stats }) {
             {s.value}
           </p>
           {s.sub && (
-            <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: 5 }}>
+            <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: 4 }}>
               {s.sub}
             </p>
           )}

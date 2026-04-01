@@ -57,11 +57,11 @@ export default function Security() {
         { label: 'Pending Reviews',  value: '11',     valueColor: 'var(--color-warning)' },
       ]} />
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 14, alignItems: 'start' }}>
+      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 12, alignItems: 'start' }}>
         {/* Compliance frameworks */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.12 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.1 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
@@ -80,7 +80,7 @@ export default function Security() {
                 <div style={{ height: 4, borderRadius: 999, background: 'var(--bg-subtle)', overflow: 'hidden', marginBottom: 6 }}>
                   <motion.div
                     initial={{ width: 0 }} animate={{ width: `${fw.score}%` }}
-                    transition={{ duration: 0.45, ease: EASE, delay: 0.3 + i * 0.05 }}
+                    transition={{ duration: 0.32, ease: EASE, delay: 0.2 + i * 0.04 }}
                     style={{ height: '100%', borderRadius: 999, background: cfg.bar }}
                   />
                 </div>
@@ -96,7 +96,7 @@ export default function Security() {
         {/* Violations */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.18 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.14 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >

@@ -44,11 +44,11 @@ export default function Insights() {
         { label: 'Incidents',    value: '14',      sub: 'this month' },
       ]} />
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 14, marginBottom: 14 }}>
+      <section style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 12, marginBottom: 12 }}>
         {/* Bar chart */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.12 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.1 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
@@ -65,7 +65,7 @@ export default function Insights() {
                     <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{d.val}</span>
                     <motion.div
                       initial={{ height: 0 }} animate={{ height: `${pct}%` }}
-                      transition={{ duration: 0.45, ease: EASE, delay: 0.2 + i * 0.05 }}
+                      transition={{ duration: 0.32, ease: EASE, delay: 0.14 + i * 0.04 }}
                       style={{
                         width: '100%', borderRadius: '4px 4px 2px 2px',
                         background: d.val === MAX_VAL ? '#FE6F5E' : '#411B7F',
@@ -83,7 +83,7 @@ export default function Insights() {
         {/* Top noisy services */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.18 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.14 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
@@ -112,12 +112,12 @@ export default function Insights() {
       {/* AI Insights */}
       <motion.section
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: EASE, delay: 0.24 }}
-        style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+        transition={{ duration: 0.18, ease: EASE, delay: 0.18 }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
       >
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '-0.01em', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>AI-Generated Insights</h2>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 10.5, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2 }}>AI-Generated Insights</h2>
         {INSIGHTS_LIST.map((ins) => (
-          <div key={ins.title} style={{ display: 'flex', gap: 14, padding: '14px 18px', borderRadius: 10, background: 'var(--bg-surface)', border: `1px solid ${ins.border}` }}>
+          <div key={ins.title} style={{ display: 'flex', gap: 14, padding: '13px 16px', borderRadius: 8, background: 'var(--bg-surface)', border: `1px solid ${ins.border}` }}>
             <FontAwesomeIcon icon={ins.icon} style={{ width: 14, height: 14, color: ins.color, flexShrink: 0, marginTop: 2 }} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>

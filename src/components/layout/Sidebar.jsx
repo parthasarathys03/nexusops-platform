@@ -118,7 +118,7 @@ function NavItem({ item, isActive, collapsed, onClick }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       whileTap={enabled ? { scale: 0.97 } : {}}
-      className="w-full relative flex items-center gap-3 rounded-[10px] h-[38px] text-left"
+      className="w-full relative flex items-center gap-2.5 rounded-[8px] h-[36px] text-left"
       style={{
         paddingLeft: collapsed ? 0 : '10px',
         paddingRight: collapsed ? 0 : '10px',
@@ -195,7 +195,7 @@ function NavItem({ item, isActive, collapsed, onClick }) {
             : hovered && enabled
             ? '#411B7F'
             : 'var(--sidebar-icon-default)',
-          transition: 'color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          transition: 'color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
         <FontAwesomeIcon icon={item.icon} style={{ width: '14px', height: '14px' }} />
@@ -207,15 +207,15 @@ function NavItem({ item, isActive, collapsed, onClick }) {
         animate={collapsed ? 'closed' : 'open'}
         className="flex-1 items-center gap-1.5 overflow-hidden"
         style={{
-          fontSize: '13.5px',
-          fontWeight: isActive ? 700 : hovered && enabled ? 600 : 500,
+          fontSize: '13px',
+          fontWeight: isActive ? 600 : 500,
           color: isActive
             ? 'var(--sidebar-active-text)'
             : hovered && enabled
             ? 'var(--text-primary)'
             : 'var(--sidebar-text-default)',
-          letterSpacing: isActive ? '-0.014em' : '-0.008em',
-          transition: 'color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          letterSpacing: '-0.01em',
+          transition: 'color 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
         <span className="truncate">{item.label}</span>

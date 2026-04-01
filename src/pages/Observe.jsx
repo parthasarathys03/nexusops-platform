@@ -49,11 +49,11 @@ export default function Observe() {
         { label: 'Uptime (30d avg)',  value: '99.91%', sub: 'across all services' },
       ]} />
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 14, alignItems: 'start' }}>
+      <section style={{ display: 'grid', gridTemplateColumns: '1fr 290px', gap: 12, alignItems: 'start' }}>
         {/* Service health table */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.12 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.1 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
@@ -95,7 +95,7 @@ export default function Observe() {
         {/* Infra capacity */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.18 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.14 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
@@ -122,7 +122,7 @@ export default function Observe() {
                   <div style={{ height: 5, borderRadius: 999, background: 'var(--bg-subtle)', overflow: 'hidden' }}>
                     <motion.div
                       initial={{ width: 0 }} animate={{ width: `${pct}%` }}
-                      transition={{ duration: 0.5, ease: EASE, delay: 0.3 }}
+                      transition={{ duration: 0.35, ease: EASE, delay: 0.22 }}
                       style={{ height: '100%', borderRadius: 999, background: barColor }}
                     />
                   </div>

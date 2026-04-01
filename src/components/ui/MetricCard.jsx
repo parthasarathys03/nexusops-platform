@@ -21,12 +21,12 @@ export function MetricCard({
     <motion.article
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: EASE, delay: staggerIndex * 0.04 }}
+      transition={{ duration: 0.17, ease: EASE, delay: staggerIndex * 0.04 }}
       className="app-card"
       style={{ padding: '20px 22px 18px' }}
     >
       {/* Label row */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
         <span style={{
           fontSize: '10.5px',
           fontWeight: 600,
@@ -52,12 +52,12 @@ export function MetricCard({
         style={{
           fontFamily: 'var(--font-mono)',
           fontFeatureSettings: "'tnum'",
-          fontSize: '2rem',
+          fontSize: '1.85rem',
           fontWeight: 800,
           letterSpacing: '-0.04em',
           lineHeight: 1,
           color: 'var(--text-primary)',
-          marginBottom: 10,
+          marginBottom: 8,
         }}
       >
         {value}

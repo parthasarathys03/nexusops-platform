@@ -87,8 +87,8 @@ export default function Overview() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '14px',
-          marginBottom: '22px',
+          gap: '12px',
+          marginBottom: '16px',
         }}
       >
         {METRICS.map((item) => (
@@ -102,7 +102,7 @@ export default function Overview() {
         style={{
           display: 'grid',
           gridTemplateColumns: '1.15fr 0.85fr',
-          gap: '14px',
+          gap: '12px',
           alignItems: 'start',
         }}
       >
@@ -110,8 +110,8 @@ export default function Overview() {
         <motion.article
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.24, ease: EASE, delay: 0.18 }}
-          className="app-card app-card-prominent"
+          transition={{ duration: 0.18, ease: EASE, delay: 0.14 }}
+          className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >
           {/* Card header */}
@@ -239,7 +239,7 @@ export default function Overview() {
         <motion.article
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.24, ease: EASE, delay: 0.22 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.18 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >

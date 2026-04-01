@@ -44,7 +44,7 @@ export default function Agents() {
         { label: 'Avg Task Time',   value: '4m 12s' },
       ]} />
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1.3fr 0.7fr', gap: 14, alignItems: 'start' }}>
+      <section style={{ display: 'grid', gridTemplateColumns: '1.3fr 0.7fr', gap: 12, alignItems: 'start' }}>
         {/* Agent cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {AGENTS.map((agent, i) => {
@@ -53,9 +53,9 @@ export default function Agents() {
               <motion.div
                 key={agent.id}
                 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, ease: EASE, delay: 0.1 + i * 0.05 }}
+                transition={{ duration: 0.17, ease: EASE, delay: 0.08 + i * 0.04 }}
                 className="app-card"
-                style={{ padding: '14px 18px', display: 'flex', gap: 14, alignItems: 'flex-start' }}
+                style={{ padding: '13px 16px', display: 'flex', gap: 12, alignItems: 'flex-start' }}
               >
                 <FontAwesomeIcon icon={faRobot} style={{ width: 14, height: 14, color: cfg.color, flexShrink: 0, marginTop: 3 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -81,7 +81,7 @@ export default function Agents() {
         {/* Activity log */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE, delay: 0.18 }}
+          transition={{ duration: 0.18, ease: EASE, delay: 0.14 }}
           className="app-card"
           style={{ padding: 0, overflow: 'hidden' }}
         >

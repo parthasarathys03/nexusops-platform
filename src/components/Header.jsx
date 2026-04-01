@@ -82,9 +82,9 @@ export default function Header({ activePage, isDark, toggleTheme }) {
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '17px',
+            fontSize: '16px',
             fontWeight: 700,
-            letterSpacing: '-0.024em',
+            letterSpacing: '-0.022em',
             color: 'var(--text-primary)',
             lineHeight: 1,
           }}

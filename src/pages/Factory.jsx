@@ -51,9 +51,9 @@ export default function Factory() {
       {/* Models table */}
       <motion.div
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: EASE, delay: 0.12 }}
+        transition={{ duration: 0.18, ease: EASE, delay: 0.1 }}
         className="app-card"
-        style={{ padding: 0, overflow: 'hidden', marginBottom: 14 }}
+        style={{ padding: 0, overflow: 'hidden', marginBottom: 12 }}
       >
         <div style={{ padding: '14px 20px 12px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 8 }}>
           <FontAwesomeIcon icon={faRobot} style={{ width: 13, height: 13, color: 'var(--text-tertiary)' }} />
@@ -95,7 +95,7 @@ export default function Factory() {
       {/* Pipelines */}
       <motion.div
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: EASE, delay: 0.2 }}
+        transition={{ duration: 0.18, ease: EASE, delay: 0.16 }}
         className="app-card"
         style={{ padding: 0, overflow: 'hidden' }}
       >
