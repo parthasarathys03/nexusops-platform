@@ -1,49 +1,48 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  TbHeartRateMonitor,
-  TbShieldCheck,
-  TbDeviceDesktopAnalytics,
-  TbLayoutDashboard,
-  TbBellRinging2,
-  TbFlame,
-  TbAtom2,
-  TbSparkles,
-  TbFingerprint,
-  TbAdjustmentsHorizontal,
-  TbChevronLeft,
-  TbChevronRight,
-  TbChevronDown,
-  TbBolt,
-  TbPointFilled,
-  TbSettings,
-} from 'react-icons/tb'
+  faGauge, faBell, faTriangleExclamation, faDiagramProject,
+  faPlug, faRobot, faChartLine, faSitemap, faUsers, faKey,
+  faClipboardList, faGear, faArrowRightFromBracket,
+  faAnglesLeft, faAnglesRight, faCircleCheck, faAtom,
+  faShieldHalved, faDesktop,
+} from '@fortawesome/free-solid-svg-icons'
 
-const NAV = [
+// ─── Navigation Config ────────────────────────────────────────────────────────
+
+const NAV_GROUPS = [
   {
-    section: 'Observe',
+    title: 'Observe',
     items: [
-      { id: 'health',  label: 'Operational Health', Icon: TbHeartRateMonitor },
-      { id: 'support', label: 'Production Support',  Icon: TbShieldCheck },
-      { id: 'itops',   label: 'IT Ops',              Icon: TbDeviceDesktopAnalytics },
+      { id: 'health',  label: 'Operational Health', icon: faDesktop },
+      { id: 'support', label: 'Production Support',  icon: faShieldHalved },
+      { id: 'itops',   label: 'IT Ops',              icon: faChartLine },
     ],
   },
   {
-    section: 'Operate',
+    title: 'Operate',
     items: [
-      { id: 'overview',  label: 'Overview',            Icon: TbLayoutDashboard },
-      { id: 'alerts',    label: 'Alerts',              Icon: TbBellRinging2,   badge: 15 },
-      { id: 'incidents', label: 'Incidents',           Icon: TbFlame,          badge: 11 },
-      { id: 'rca',       label: 'Root Cause Analysis', Icon: TbAtom2 },
+      { id: 'overview',  label: 'Overview',            icon: faGauge },
+      { id: 'alerts',    label: 'Alerts',              icon: faBell,                badge: 15 },
+      { id: 'incidents', label: 'Incidents',           icon: faTriangleExclamation, badge: 11 },
+      { id: 'rca',       label: 'Root Cause Analysis', icon: faAtom },
     ],
   },
   {
-    section: 'Platform',
+    title: 'Platform',
     items: [
-      { id: 'aifactory', label: 'AI Factory',            Icon: TbSparkles },
-      { id: 'security',  label: 'Security & Governance', Icon: TbFingerprint },
-      { id: 'settings',  label: 'Settings',              Icon: TbAdjustmentsHorizontal },
+      { id: 'aifactory', label: 'AI Factory',            icon: faRobot },
+      { id: 'security',  label: 'Security & Governance', icon: faSitemap },
+      { id: 'settings',  label: 'Settings',              icon: faGear },
     ],
   },
+]
+
+const BOTTOM_NAV = [
+  { id: 'users',    label: 'Users',     icon: faUsers },
+  { id: 'api-keys', label: 'API Keys',  icon: faKey },
+  { id: 'logs',     label: 'Audit Log', icon: faClipboardList },
 ]
 
 const INTG = [
@@ -53,369 +52,469 @@ const INTG = [
   { name: 'Prometheus', s: 'ok'   },
   { name: 'Grafana',    s: 'ok'   },
 ]
-const S_CLR = { ok: '#34D399', warn: '#FBBF24', off: '#6B7280' }
+const INTG_CLR = { ok: '#10B981', warn: '#F59E0B', off: '#475569' }
 
-/* ── colours live here, easy to change ── */
-const SB = {
-  bg:      '#1E293B',   /* cool slate — enterprise standard, distinct from warm sandal */
-  border:  'rgba(255,255,255,.07)',
-  t1:      '#F1F5F9',   /* primary text   — crisp cool near-white     */
-  t2:      '#94A3B8',   /* secondary text — slate blue-gray           */
-  t3:      '#475569',   /* muted labels                               */
-  actBg:   'rgba(255,255,255,.1)',  /* active row bg  */
-  actBar:  '#5EEAD4',               /* active left bar */
-  actIcon: '#5EEAD4',               /* active icon     */
-  actText: '#F1F5F9',               /* active text     */
-  hovBg:   'rgba(255,255,255,.06)',
-  hovIcon: '#CBD5E1',
+// ─── Animation Variants ───────────────────────────────────────────────────────
+
+const sidebarVariants = {
+  expanded:  { width: 280, transition: { type: 'spring', stiffness: 300, damping: 30 } },
+  collapsed: { width: 72,  transition: { type: 'spring', stiffness: 300, damping: 30 } },
 }
 
-/* ── single nav button ── */
-function Item({ item, active, onClick, showText, stagger }) {
-  const [hov, setHov] = useState(false)
-  const { label, Icon, badge } = item
+const labelVariants = {
+  expanded:  { opacity: 1, x: 0, display: 'block', transition: { duration: 0.2, delay: 0.05 } },
+  collapsed: { opacity: 0, x: -8, transition: { duration: 0.15 }, transitionEnd: { display: 'none' } },
+}
+
+const groupTitleVariants = {
+  expanded:  { opacity: 1, height: 'auto', marginBottom: 4, transition: { duration: 0.2 } },
+  collapsed: { opacity: 0, height: 0, marginBottom: 0, transition: { duration: 0.15 } },
+}
+
+const listVariants = {
+  expanded:  { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
+  collapsed: { transition: { staggerChildren: 0.02 } },
+}
+
+const itemVariants = {
+  hidden:  { opacity: 0, x: -12 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.25 } },
+}
+
+const subMenuVariants = {
+  open:   { height: 'auto', opacity: 1, transition: { duration: 0.25 } },
+  closed: { height: 0,      opacity: 0, transition: { duration: 0.2  } },
+}
+
+// ─── SidebarItem Component ────────────────────────────────────────────────────
+
+function SidebarItem({ item, isCollapsed, isActive, onClick }) {
+  const [subOpen, setSubOpen] = useState(false)
+  const hasSubItems = Boolean(item.subItems?.length)
 
   return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      title={!showText ? label : undefined}
-      style={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 9,
-        padding: '8px 12px',
-        borderRadius: 9,
-        border: 'none',
-        cursor: 'pointer',
-        marginBottom: 1,
-        position: 'relative',
-        outline: 'none',
-        textAlign: 'left',
-        background: active ? SB.actBg : hov ? SB.hovBg : 'transparent',
-        transition: 'background .18s ease',
-        animation: `sbSlide .24s ease ${stagger}ms both`,
-        justifyContent: showText ? 'flex-start' : 'center',
-      }}
-    >
-      {/* left accent bar */}
-      <span style={{
-        position: 'absolute',
-        left: 0, top: '20%', bottom: '20%',
-        width: 3, borderRadius: '0 3px 3px 0',
-        background: SB.actBar,
-        opacity: active ? 1 : 0,
-        transform: active ? 'scaleY(1)' : 'scaleY(0)',
-        transformOrigin: 'center',
-        transition: 'opacity .2s ease, transform .22s cubic-bezier(.4,0,.2,1)',
-      }} />
+    <motion.div variants={itemVariants} initial="hidden" animate="visible">
+      <button
+        onClick={hasSubItems ? () => setSubOpen(v => !v) : onClick}
+        className="relative flex items-center gap-3 px-3 py-2.5 rounded-lg group cursor-pointer select-none w-full text-left"
+        style={{ background: 'transparent', border: 'none', fontFamily: 'inherit',
+                 justifyContent: isCollapsed ? 'center' : 'flex-start' }}
+      >
+        {/* Active pill */}
+        {isActive && (
+          <motion.span
+            layoutId="active-nav-pill"
+            className="absolute inset-0 rounded-lg"
+            style={{
+              background: 'rgba(0,212,170,0.1)',
+              border: '1px solid rgba(0,212,170,0.25)',
+              boxShadow: '0 0 12px rgba(0,212,170,0.1)',
+            }}
+            transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+          />
+        )}
 
-      {/* icon — no heavy wrapper box */}
-      <Icon
-        size={17}
-        strokeWidth={active ? 2.2 : 1.8}
-        color={active ? SB.actIcon : hov ? SB.hovIcon : SB.t2}
-        style={{
-          flexShrink: 0,
-          transition: 'color .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
-          transform: hov && !active ? 'scale(1.15)' : 'scale(1)',
-        }}
-      />
+        {/* Hover background */}
+        <motion.span
+          className="absolute inset-0 rounded-lg"
+          style={{ background: 'rgba(255,255,255,0.04)', opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+        />
 
-      {/* label + badge — controlled by showText */}
-      {showText && (
-        <>
-          <span style={{
-            flex: 1,
-            fontSize: 13.5,
-            fontWeight: active ? 700 : 400,
-            color: active ? SB.actText : hov ? '#EDFAF9' : SB.t2,
-            letterSpacing: '-.01em',
-            lineHeight: 1,
-            transition: 'color .18s ease',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}>
-            {label}
-          </span>
+        {/* Icon */}
+        <motion.span
+          className="relative z-10 flex-shrink-0 w-5 h-5 flex items-center justify-center"
+          whileHover={{ scale: 1.15 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+        >
+          <FontAwesomeIcon
+            icon={item.icon}
+            className={isActive ? 'text-base text-[#00D4AA] group-hover:scale-[1.12]' : 'text-base text-[#475569] group-hover:text-[#94A3B8] group-hover:scale-[1.12]'}
+            style={{ transition: 'color 200ms, transform 200ms' }}
+          />
+        </motion.span>
 
-          {badge && (
-            <span style={{
-              minWidth: 22, height: 18, borderRadius: 6, padding: '0 6px',
-              fontSize: 10.5, fontWeight: 700,
-              background: active ? 'rgba(94,234,212,.22)' : 'rgba(255,255,255,.1)',
-              color: active ? SB.actIcon : SB.t2,
+        {/* Label */}
+        <motion.span
+          variants={labelVariants}
+          style={{
+            position: 'relative', zIndex: 10,
+            fontSize: '0.875rem', fontWeight: 500,
+            color: isActive ? '#E2E8F0' : '#94A3B8',
+            flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            transition: 'color 200ms',
+          }}
+        >
+          {item.label}
+        </motion.span>
+
+        {/* Badge */}
+        {item.badge && !isCollapsed && (
+          <motion.span
+            variants={labelVariants}
+            style={{
+              position: 'relative', zIndex: 10, flexShrink: 0,
+              minWidth: 20, height: 20, padding: '0 6px', borderRadius: 9999,
+              background: 'rgba(244,63,94,0.15)', border: '1px solid rgba(244,63,94,0.3)',
+              fontSize: 10, fontWeight: 700, color: '#F43F5E',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-              transition: 'all .18s ease',
-            }}>
-              {badge}
-            </span>
-          )}
-        </>
-      )}
+            }}
+          >
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              {item.badge}
+            </motion.span>
+          </motion.span>
+        )}
 
-      {/* collapsed badge dot */}
-      {!showText && badge && (
-        <span style={{
-          position: 'absolute', top: 6, right: 6,
-          width: 7, height: 7, borderRadius: '50%',
-          background: SB.actBar,
-          boxShadow: `0 0 0 2px ${SB.bg}`,
-        }} />
+        {/* Collapsed badge dot */}
+        {item.badge && isCollapsed && (
+          <span style={{
+            position: 'absolute', top: 6, right: 6,
+            width: 7, height: 7, borderRadius: '50%',
+            background: '#F43F5E',
+            boxShadow: '0 0 0 2px rgba(11,18,34,0.92)',
+          }} />
+        )}
+
+        {/* Collapsed tooltip */}
+        {isCollapsed && (
+          <motion.div
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            style={{
+            position: 'absolute', left: 'calc(100% + 12px)', top: '50%', transform: 'translateY(-50%)',
+            padding: '6px 10px', borderRadius: 8,
+            background: '#1A2540', border: '1px solid #1E293B',
+            fontSize: 12, fontWeight: 500, color: '#E2E8F0',
+            whiteSpace: 'nowrap', pointerEvents: 'none',
+            opacity: 0, zIndex: 50,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+            transition: 'opacity 150ms',
+          }}
+            className="group-hover:opacity-100"
+          >
+            {item.label}
+            {item.badge && <span style={{ marginLeft: 8, color: '#F43F5E' }}>({item.badge})</span>}
+          </motion.div>
+        )}
+      </button>
+
+      {/* Sub-menu */}
+      {hasSubItems && !isCollapsed && (
+        <AnimatePresence>
+          {subOpen && (
+            <motion.div
+              variants={subMenuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              style={{ overflow: 'hidden', paddingLeft: 40, display: 'flex', flexDirection: 'column', gap: 2, marginTop: 2 }}
+            >
+              {item.subItems.map(sub => (
+                <button
+                  key={sub.id}
+                  onClick={() => onClick && onClick(sub.id)}
+                  style={{
+                    fontSize: 12, fontWeight: 500, color: '#475569',
+                    padding: '8px 12px', borderRadius: 6,
+                    background: 'transparent', border: 'none',
+                    cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit',
+                    transition: 'color 150ms, background 150ms',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#94A3B8'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = 'transparent' }}
+                >
+                  {sub.label}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
-    </button>
+    </motion.div>
   )
 }
 
-/* ── sidebar ── */
+// ─── Main Sidebar ─────────────────────────────────────────────────────────────
+
 export default function Sidebar({ activePage, setActivePage, collapsed, setCollapsed }) {
   const [intgOpen, setIntgOpen] = useState(true)
-  const [showText, setShowText] = useState(true)
 
-  /* two-phase: fade text → shrink | grow → show text */
-  const toggle = useCallback(() => {
-    if (!collapsed) {
-      setShowText(false)
-      setTimeout(() => setCollapsed(true), 170)
-    } else {
-      setCollapsed(false)
-      setTimeout(() => setShowText(true), 200)
-    }
-  }, [collapsed, setCollapsed])
-
-  useEffect(() => { setShowText(!collapsed) }, [])
-
-  let stagger = 0
+  const toggle = () => setCollapsed(v => !v)
 
   return (
-    <aside style={{
-      width: collapsed ? 62 : '258px',
-      flexShrink: 0,
-      background: SB.bg,
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      zIndex: 20,
-      transition: 'width .28s cubic-bezier(.4,0,.2,1)',
-      overflow: 'hidden',
-      borderRight: '1px solid rgba(0,0,0,.18)',
-    }}>
-
-      {/* ── header row: logo + collapse btn ── */}
-      <div style={{
-        height: 'var(--header-h)',
+    <motion.aside
+      variants={sidebarVariants}
+      animate={collapsed ? 'collapsed' : 'expanded'}
+      initial={false}
+      style={{
+        position: 'relative',
+        height: '100vh',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 12px 0 14px',
-        borderBottom: `1px solid ${SB.border}`,
+        flexDirection: 'column',
+        overflow: 'hidden',
         flexShrink: 0,
-      }}>
-        {/* logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, overflow: 'hidden', flex: 1 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 9, flexShrink: 0,
-            background: '#0D9488',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'transform .22s cubic-bezier(.34,1.56,.64,1)',
-          }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            <TbBolt size={16} color="#fff" strokeWidth={2.5} />
-          </div>
+        background: 'rgba(11,18,34,0.92)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        borderRight: '1px solid rgba(30,41,59,0.8)',
+        boxShadow: '4px 0 24px rgba(0,0,0,0.3)',
+        zIndex: 20,
+      }}
+    >
+      {/* Gradient accent line at top */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 2, zIndex: 10,
+        background: 'linear-gradient(90deg, #00D4AA 0%, rgba(0,212,170,0) 100%)',
+      }} />
 
-          <div style={{
-            overflow: 'hidden',
-            opacity: showText ? 1 : 0,
-            transform: showText ? 'translateX(0)' : 'translateX(-6px)',
-            transition: 'opacity .15s ease, transform .15s ease',
-            whiteSpace: 'nowrap',
-          }}>
-            <p style={{ fontSize: 14.5, fontWeight: 800, color: SB.t1, letterSpacing: '-.4px', lineHeight: 1 }}>
-              NexusOps
-            </p>
-            <p style={{ fontSize: 9.5, fontWeight: 600, color: SB.t3, letterSpacing: '.12em', textTransform: 'uppercase', marginTop: 3 }}>
-              AI Operations
-            </p>
-          </div>
+      {/* ── Logo ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '0 16px', height: 'var(--header-h)', flexShrink: 0,
+        borderBottom: '1px solid #1E293B',
+      }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 9, flexShrink: 0,
+          background: 'linear-gradient(135deg, #00D4AA 0%, #0891B2 100%)',
+          boxShadow: '0 0 12px rgba(0,212,170,0.4)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <FontAwesomeIcon icon={faCircleCheck} style={{ color: '#fff', fontSize: '0.875rem' }} />
         </div>
 
-        {/* collapse button — inside header, clean */}
-        <button
-          onClick={toggle}
-          style={{
-            width: 26, height: 26, borderRadius: 7, flexShrink: 0,
-            background: 'rgba(255,255,255,.1)',
-            border: '1px solid rgba(255,255,255,.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'background .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.2)'; e.currentTarget.style.transform = 'scale(1.1)' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; e.currentTarget.style.transform = 'scale(1)' }}
-        >
-          {collapsed
-            ? <TbChevronRight size={13} strokeWidth={2.2} color={SB.t2} />
-            : <TbChevronLeft  size={13} strokeWidth={2.2} color={SB.t2} />
-          }
-        </button>
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.05 } }}
+              exit={{ opacity: 0, x: -8 }}
+              style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
+            >
+              <p style={{ fontSize: 14.5, fontWeight: 800, color: '#E2E8F0', letterSpacing: '-0.4px', lineHeight: 1, fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
+                Nexus Command
+              </p>
+              <p style={{ fontSize: 9.5, fontWeight: 600, color: '#475569', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 3 }}>
+                AI Operations
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* ── nav ── */}
-      <nav style={{
-        flex: 1,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        padding: '12px 8px 0',
-        scrollbarWidth: 'none',
-      }}>
-        {NAV.map(({ section, items }, gi) => (
-          <div key={section} style={{ marginBottom: 6 }}>
-            {/* section label */}
-            {showText ? (
-              <p style={{
-                fontSize: 9.5, fontWeight: 700, letterSpacing: '.13em',
-                textTransform: 'uppercase', color: SB.t3,
-                padding: '8px 12px 4px',
-                opacity: showText ? 1 : 0,
-                transition: 'opacity .15s ease',
-                whiteSpace: 'nowrap',
-              }}>
-                {section}
-              </p>
-            ) : gi > 0 ? (
-              <div style={{ height: 1, margin: '8px 10px', background: SB.border }} />
-            ) : (
-              <div style={{ height: 4 }} />
-            )}
+      {/* ── Navigation ── */}
+      <div
+        className="sidebar-scroll"
+        style={{
+          flex: 1, overflowY: 'auto', overflowX: 'hidden',
+          padding: '16px 8px 0',
+        }}
+      >
+        {NAV_GROUPS.map((group, gi) => (
+          <div key={gi} style={{ marginBottom: 24 }}>
+            {/* Group title */}
+            <AnimatePresence>
+              {group.title && !collapsed && (
+                <motion.p
+                  variants={groupTitleVariants}
+                  initial="collapsed"
+                  animate="expanded"
+                  exit="collapsed"
+                  style={{
+                    padding: '0 12px', fontSize: 10, fontWeight: 700,
+                    textTransform: 'uppercase', letterSpacing: '0.12em',
+                    color: '#475569', overflow: 'hidden',
+                  }}
+                >
+                  {group.title}
+                </motion.p>
+              )}
+              {collapsed && gi > 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  style={{ height: 1, margin: '0 8px 8px', background: '#1E293B' }}
+                />
+              )}
+            </AnimatePresence>
 
-            {items.map(item => (
-              <Item
-                key={item.id}
-                item={item}
-                active={activePage === item.id}
-                onClick={() => setActivePage(item.id)}
-                showText={showText}
-                stagger={stagger++ * 32}
-              />
-            ))}
+            {/* Items */}
+            <motion.div
+              variants={listVariants}
+              animate={collapsed ? 'collapsed' : 'expanded'}
+              style={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            >
+              {group.items.map(item => (
+                <SidebarItem
+                  key={item.id}
+                  item={item}
+                  isCollapsed={collapsed}
+                  isActive={activePage === item.id}
+                  onClick={() => setActivePage(item.id)}
+                />
+              ))}
+            </motion.div>
           </div>
         ))}
 
-        {/* integrations */}
-        {showText && (
-          <div style={{
-            marginTop: 8, paddingTop: 10,
-            borderTop: `1px solid ${SB.border}`,
-            opacity: showText ? 1 : 0,
-            transition: 'opacity .15s ease',
-          }}>
+        {/* Integrations section */}
+        {!collapsed && (
+          <div style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid #1E293B' }}>
             <button
               onClick={() => setIntgOpen(v => !v)}
               style={{
                 display: 'flex', alignItems: 'center', width: '100%',
                 padding: '4px 12px', background: 'none', border: 'none',
-                cursor: 'pointer', marginBottom: 2,
-                transition: 'opacity .15s',
+                cursor: 'pointer', marginBottom: 4, fontFamily: 'inherit',
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '.65'}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
               onMouseLeave={e => e.currentTarget.style.opacity = '1'}
             >
               <span style={{
-                flex: 1, fontSize: 9.5, fontWeight: 700, letterSpacing: '.13em',
-                textTransform: 'uppercase', color: SB.t3, whiteSpace: 'nowrap',
+                flex: 1, fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
+                textTransform: 'uppercase', color: '#475569', whiteSpace: 'nowrap',
               }}>
                 Integrations
               </span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#34D399', marginRight: 8 }}>14/15</span>
-              <TbChevronDown
-                size={12} strokeWidth={2} color={SB.t3}
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#10B981', marginRight: 8 }}>14/15</span>
+              <FontAwesomeIcon
+                icon={faAnglesRight}
                 style={{
-                  flexShrink: 0,
-                  transition: 'transform .22s ease',
-                  transform: intgOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
+                  fontSize: 10, color: '#475569', flexShrink: 0,
+                  transform: intgOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                  transition: 'transform 220ms ease',
                 }}
               />
             </button>
 
-            {intgOpen && INTG.map((ig, i) => (
-              <div key={ig.name}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 9,
-                  padding: '5px 12px', borderRadius: 8, cursor: 'pointer',
-                  transition: 'background .15s ease',
-                  animation: `sbSlide .18s ease ${i * 36}ms both`,
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = SB.hovBg}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-              >
-                <TbPointFilled size={8} color={S_CLR[ig.s] || S_CLR.off} />
-                <span style={{ flex: 1, fontSize: 12.5, color: SB.t2 }}>{ig.name}</span>
-              </div>
-            ))}
+            <AnimatePresence>
+              {intgOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  {INTG.map((ig, i) => (
+                    <div
+                      key={ig.name}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 9,
+                        padding: '5px 12px', borderRadius: 8, cursor: 'pointer',
+                        transition: 'background 150ms ease',
+                        animation: `sbSlide .18s ease ${i * 36}ms both`,
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <div style={{
+                        width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
+                        background: INTG_CLR[ig.s] || INTG_CLR.off,
+                      }} />
+                      <span style={{ flex: 1, fontSize: 12.5, color: '#94A3B8' }}>{ig.name}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
-      </nav>
+      </div>
 
-      {/* ── user ── */}
-      <div style={{ borderTop: `1px solid ${SB.border}`, padding: '8px 8px', flexShrink: 0 }}>
-        <div
+      {/* ── Divider ── */}
+      <div style={{ margin: '0 16px', height: 1, background: '#1E293B', flexShrink: 0 }} />
+
+      {/* ── Bottom Nav ── */}
+      <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {BOTTOM_NAV.map(item => (
+          <SidebarItem
+            key={item.id}
+            item={item}
+            isCollapsed={collapsed}
+            isActive={activePage === item.id}
+            onClick={() => setActivePage(item.id)}
+          />
+        ))}
+      </div>
+
+      {/* ── User Avatar ── */}
+      <div style={{ flexShrink: 0, padding: '8px 8px', borderTop: '1px solid #1E293B' }}>
+        <motion.div
+          className="group"
           style={{
             display: 'flex', alignItems: 'center', gap: 9,
             padding: '8px 8px', borderRadius: 9, cursor: 'pointer',
-            transition: 'background .18s ease',
-            justifyContent: showText ? 'flex-start' : 'center',
+            transition: 'background 150ms',
+            justifyContent: collapsed ? 'center' : 'flex-start',
           }}
-          onMouseEnter={e => e.currentTarget.style.background = SB.hovBg}
+          whileHover={{ scale: 1.01 }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
           <div style={{
-            width: 32, height: 32, borderRadius: 9, flexShrink: 0,
-            background: 'rgba(255,255,255,.15)',
+            width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
+            background: 'linear-gradient(135deg, #00D4AA, #0891B2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, fontWeight: 800, color: '#EDFAF9',
-            transition: 'background .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.25)'; e.currentTarget.style.transform = 'scale(1.07)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.15)'; e.currentTarget.style.transform = 'scale(1)' }}
-          >
+            fontSize: 11, fontWeight: 800, color: '#0B1222', userSelect: 'none',
+          }}>
             JR
           </div>
 
-          <div style={{
-            flex: 1, minWidth: 0,
-            opacity: showText ? 1 : 0,
-            transform: showText ? 'translateX(0)' : 'translateX(-6px)',
-            transition: 'opacity .15s ease, transform .15s ease',
-            overflow: 'hidden', whiteSpace: 'nowrap',
-          }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: SB.t1, letterSpacing: '-.02em', lineHeight: 1, marginBottom: 3 }}>
-              Jordan Rivera
-            </p>
-            <p style={{ fontSize: 11, color: SB.t3, lineHeight: 1 }}>
-              Sr. SRE Engineer
-            </p>
-          </div>
+          <AnimatePresence>
+            {!collapsed && (
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                style={{ flex: 1, minWidth: 0 }}
+              >
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#CBD5E1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  Jordan Rivera
+                </p>
+                <p style={{ fontSize: 10, color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  Sr. SRE Engineer
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {showText && (
-            <TbSettings
-              size={14} strokeWidth={1.8} color={SB.t3}
-              style={{
-                flexShrink: 0,
-                opacity: showText ? 1 : 0,
-                transition: 'opacity .15s ease, transform .22s cubic-bezier(.34,1.56,.64,1)',
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'rotate(45deg)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'rotate(0deg)'}
+          {!collapsed && (
+            <FontAwesomeIcon
+              icon={faArrowRightFromBracket}
+              style={{ color: '#475569', fontSize: '0.75rem', flexShrink: 0, transition: 'color 150ms' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#F43F5E'}
+              onMouseLeave={e => e.currentTarget.style.color = '#475569'}
             />
           )}
-        </div>
+        </motion.div>
       </div>
-    </aside>
+
+      {/* ── Collapse Toggle ── */}
+      <motion.button
+        onClick={toggle}
+        style={{
+          position: 'absolute', right: -14, top: 72,
+          width: 28, height: 28, borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 30, background: '#131D2E',
+          border: '1px solid #1E293B', color: '#475569',
+          cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+          transition: 'color 200ms, border-color 200ms',
+        }}
+        whileHover={{ scale: 1.1, color: '#00D4AA' }}
+        whileTap={{ scale: 0.9 }}
+        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        onMouseEnter={e => { e.currentTarget.style.color = '#00D4AA'; e.currentTarget.style.borderColor = 'rgba(0,212,170,0.4)' }}
+        onMouseLeave={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.borderColor = '#1E293B' }}
+      >
+        <FontAwesomeIcon
+          icon={collapsed ? faAnglesRight : faAnglesLeft}
+          style={{ fontSize: 10, pointerEvents: 'none' }}
+        />
+      </motion.button>
+    </motion.aside>
   )
 }

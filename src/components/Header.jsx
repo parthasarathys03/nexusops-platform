@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  TbSearch, TbBell, TbChevronDown, TbRefresh,
-  TbX, TbClock, TbSettings,
-} from 'react-icons/tb'
+  faMagnifyingGlass, faBell, faChevronDown, faRotateRight,
+  faXmark, faClock, faGear, faCircleExclamation,
+} from '@fortawesome/free-solid-svg-icons'
 
 const PAGE_META = {
   overview:  { title: 'Overview',             crumb: ['Operate', 'Overview']    },
@@ -24,7 +26,7 @@ const NOTIFS = [
   { id:4, sev:'info',     text:'Deploy complete: checkout-service v2.4.1',      t:'23m' },
   { id:5, sev:'low',      text:'SSL certificate renewal in 14 days',            t:'1h'  },
 ]
-const N_C = { critical:'#EF4444', high:'#F59E0B', medium:'#D97706', low:'#10B981', info:'var(--accent)' }
+const N_C = { critical:'#F43F5E', high:'#F59E0B', medium:'#F59E0B', low:'#10B981', info:'#00D4AA' }
 
 export default function Header({ activePage }) {
   const [notifOpen, setNotifOpen] = useState(false)
@@ -47,12 +49,14 @@ export default function Header({ activePage }) {
   return (
     <header style={{
       height: 'var(--header-h)', flexShrink: 0,
-      background: 'var(--surface)',
-      borderBottom: '1px solid var(--border)',
+      background: 'rgba(11,18,34,0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      borderBottom: '1px solid var(--nc-border)',
       display: 'flex', alignItems: 'center',
       padding: '0 26px', gap: 16,
       position: 'sticky', top: 0, zIndex: 30,
-      boxShadow: '0 1px 0 var(--border)',
+      boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
     }}>
 
       {/* Breadcrumb + title */}
@@ -60,15 +64,15 @@ export default function Header({ activePage }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
           {meta.crumb.map((c, i) => (
             <React.Fragment key={c}>
-              {i > 0 && <span style={{ fontSize: 11, color: 'var(--border2)' }}>/</span>}
+              {i > 0 && <span style={{ fontSize: 11, color: 'var(--nc-border)' }}>/</span>}
               <span style={{
                 fontSize: 11, fontWeight: 500,
-                color: i === meta.crumb.length - 1 ? 'var(--accent)' : 'var(--text-3)',
+                color: i === meta.crumb.length - 1 ? 'var(--nc-accent)' : 'var(--nc-text-faint)',
               }}>{c}</span>
             </React.Fragment>
           ))}
         </div>
-        <h1 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-.3px', lineHeight: 1 }}>
+        <h1 className="page-title" style={{ letterSpacing: '-0.3px', lineHeight: 1 }}>
           {meta.title}
         </h1>
       </div>
@@ -78,12 +82,15 @@ export default function Header({ activePage }) {
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8, height: 36,
           padding: '0 13px', borderRadius: 10,
-          background: focused ? 'var(--surface)' : 'var(--raised)',
-          border: `1.5px solid ${focused ? 'var(--accent)' : 'var(--border)'}`,
-          boxShadow: focused ? '0 0 0 3px var(--ring)' : 'none',
-          transition: 'all .18s ease',
+          background: '#131D2E',
+          border: `1.5px solid ${focused ? 'var(--nc-accent)' : 'var(--nc-border)'}`,
+          boxShadow: focused ? '0 0 0 3px rgba(0,212,170,0.15)' : 'none',
+          transition: 'all 180ms ease',
         }}>
-          <TbSearch size={14} strokeWidth={2} color={focused ? 'var(--accent)' : 'var(--text-3)'} style={{ transition:'color .18s', flexShrink:0 }} />
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            style={{ fontSize: 13, color: focused ? 'var(--nc-accent)' : 'var(--nc-text-faint)', transition: 'color 180ms', flexShrink: 0 }}
+          />
           <input
             ref={inputRef}
             value={query}
@@ -91,16 +98,20 @@ export default function Header({ activePage }) {
             onFocus={() => setFocused(true)}
             onBlur={() => setTimeout(() => setFocused(false), 180)}
             placeholder="Search alerts, services, hosts..."
-            style={{ flex:1, background:'none', border:'none', outline:'none', fontSize:13.5, color:'var(--text-1)', fontFamily:'inherit', letterSpacing:'-.01em' }}
+            style={{
+              flex:1, background:'none', border:'none', outline:'none',
+              fontSize:13.5, color:'var(--nc-text-primary)',
+              fontFamily:'inherit', letterSpacing:'-0.01em',
+            }}
           />
           {query ? (
             <button onClick={() => setQuery('')} style={{ background:'none', border:'none', cursor:'pointer', display:'flex', padding:0 }}>
-              <TbX size={13} strokeWidth={2} color="var(--text-3)" />
+              <FontAwesomeIcon icon={faXmark} style={{ fontSize: 12, color: 'var(--nc-text-faint)' }} />
             </button>
           ) : (
             <kbd style={{
-              fontSize: 10, color: 'var(--text-3)', fontFamily: 'monospace',
-              background: 'var(--raised)', border: '1px solid var(--border)',
+              fontSize: 10, color: 'var(--nc-text-faint)', fontFamily: 'monospace',
+              background: 'var(--nc-bg-elevated)', border: '1px solid var(--nc-border)',
               borderRadius: 5, padding: '1px 6px', letterSpacing: 0,
             }}>⌘K</kbd>
           )}
@@ -109,73 +120,76 @@ export default function Header({ activePage }) {
         {focused && (
           <div style={{
             position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
-            background: 'var(--surface)', border: '1px solid var(--border)',
+            background: 'var(--nc-bg-elevated)', border: '1px solid var(--nc-border)',
             borderRadius: 12, overflow: 'hidden',
-            boxShadow: '0 8px 32px rgba(26,20,12,.12)', zIndex: 50,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)', zIndex: 50,
           }} className="anim-fade-up">
             <div style={{ padding: '9px 14px 4px' }}>
-              <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Recent</span>
+              <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--nc-text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Recent</span>
             </div>
             {['payment-service latency', 'prod-api-07 CPU alert', 'INC-2048'].map(item => (
               <button key={item} onMouseDown={e => e.preventDefault()} style={{
                 display: 'flex', alignItems: 'center', gap: 9, width: '100%',
                 padding: '9px 14px', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                transition: 'background .14s',
+                transition: 'background 140ms',
               }}
-                onMouseEnter={e => e.currentTarget.style.background='var(--raised)'}
+                onMouseEnter={e => e.currentTarget.style.background='var(--nc-bg-overlay)'}
                 onMouseLeave={e => e.currentTarget.style.background='none'}
               >
-                <TbClock size={13} strokeWidth={1.8} color="var(--text-3)" />
-                <span style={{ fontSize: 13.5, color: 'var(--text-2)' }}>{item}</span>
+                <FontAwesomeIcon icon={faClock} style={{ fontSize: 12, color: 'var(--nc-text-faint)' }} />
+                <span style={{ fontSize: 13.5, color: 'var(--nc-text-muted)' }}>{item}</span>
               </button>
             ))}
           </div>
         )}
       </div>
 
-      {/* Right */}
+      {/* Right controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto', flexShrink: 0 }}>
 
         {/* Live pill */}
-        <div style={{
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [1, 0.7, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '4px 12px', borderRadius: 99,
           background: 'var(--ok-s)', border: '1px solid var(--ok-b)',
+          boxShadow: '0 0 12px rgba(16,185,129,0.2)',
         }}>
-          <div className="dot dot-ok breathe" style={{ width: 6, height: 6 }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ok)', letterSpacing: '.05em' }}>LIVE</span>
-        </div>
+          <div className="dot dot-ok" style={{ width: 6, height: 6 }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ok)', letterSpacing: '0.05em' }}>LIVE</span>
+        </motion.div>
 
         {/* Time range */}
         <button style={{
           display: 'flex', alignItems: 'center', gap: 6,
           height: 34, padding: '0 12px', borderRadius: 9,
-          border: '1px solid var(--border)', background: 'var(--surface)',
-          fontSize: 12.5, color: 'var(--text-2)', cursor: 'pointer',
-          fontFamily: 'inherit', fontWeight: 500,
-          transition: 'all .18s ease',
+          border: '1px solid var(--nc-border)', background: 'var(--nc-bg-elevated)',
+          fontSize: 12.5, color: 'var(--nc-text-muted)', cursor: 'pointer',
+          fontFamily: 'inherit', fontWeight: 500, transition: 'all 180ms ease',
         }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.background='var(--raised)' }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)';  e.currentTarget.style.background='var(--surface)' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor='#2D3F55'; e.currentTarget.style.background='var(--nc-bg-overlay)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor='var(--nc-border)'; e.currentTarget.style.background='var(--nc-bg-elevated)' }}
         >
-          <TbClock size={13} strokeWidth={1.8} color="var(--text-3)" />
+          <FontAwesomeIcon icon={faClock} style={{ fontSize: 12, color: 'var(--nc-text-faint)' }} />
           Last 3h
-          <TbChevronDown size={12} strokeWidth={2} color="var(--text-3)" />
+          <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 11, color: 'var(--nc-text-faint)' }} />
         </button>
 
         {/* Refresh */}
         <button onClick={doRefresh} style={{
           width: 34, height: 34, borderRadius: 9,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          border: '1px solid var(--border)', background: 'var(--surface)',
-          cursor: 'pointer', transition: 'all .18s ease',
+          border: '1px solid var(--nc-border)', background: 'var(--nc-bg-elevated)',
+          cursor: 'pointer', transition: 'all 180ms ease',
         }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.background='var(--raised)' }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)';  e.currentTarget.style.background='var(--surface)' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor='#2D3F55'; e.currentTarget.style.background='var(--nc-bg-overlay)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor='var(--nc-border)'; e.currentTarget.style.background='var(--nc-bg-elevated)' }}
         >
-          <TbRefresh size={15} strokeWidth={2}
-            color="var(--text-2)"
-            style={spinning ? { animation: 'spin .85s linear infinite' } : {}}
+          <FontAwesomeIcon
+            icon={faRotateRight}
+            style={{ fontSize: 14, color: 'var(--nc-text-muted)', ...(spinning ? { animation: 'spin .85s linear infinite' } : {}) }}
           />
         </button>
 
@@ -184,15 +198,15 @@ export default function Header({ activePage }) {
           <button onClick={() => setNotifOpen(v => !v)} style={{
             width: 34, height: 34, borderRadius: 9,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: `1px solid ${notifOpen ? 'var(--border2)' : 'var(--border)'}`,
-            background: notifOpen ? 'var(--raised)' : 'var(--surface)',
-            cursor: 'pointer', position: 'relative', transition: 'all .18s ease',
+            border: `1px solid ${notifOpen ? '#2D3F55' : 'var(--nc-border)'}`,
+            background: notifOpen ? 'var(--nc-bg-overlay)' : 'var(--nc-bg-elevated)',
+            cursor: 'pointer', position: 'relative', transition: 'all 180ms ease',
           }}>
-            <TbBell size={15} strokeWidth={2} color="var(--text-2)" />
+            <FontAwesomeIcon icon={faBell} style={{ fontSize: 14, color: 'var(--nc-text-muted)' }} />
             <span style={{
               position: 'absolute', top: -4, right: -4,
               width: 17, height: 17, borderRadius: 6,
-              background: 'var(--danger)', color: '#fff',
+              background: 'var(--nc-rose)', color: '#fff',
               fontSize: 9.5, fontWeight: 700,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>5</span>
@@ -201,16 +215,16 @@ export default function Header({ activePage }) {
           {notifOpen && (
             <div style={{
               position: 'absolute', top: 'calc(100% + 8px)', right: 0, width: 320,
-              background: 'var(--surface)', border: '1px solid var(--border)',
+              background: 'var(--nc-bg-elevated)', border: '1px solid var(--nc-border)',
               borderRadius: 14, overflow: 'hidden',
-              boxShadow: '0 10px 40px rgba(26,20,12,.14)', zIndex: 50,
+              boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 50,
             }} className="anim-fade-up">
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '12px 18px', borderBottom: '1px solid var(--border)',
+                padding: '12px 18px', borderBottom: '1px solid var(--nc-border)',
               }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-1)' }}>Notifications</span>
-                <button style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--nc-text-primary)' }}>Notifications</span>
+                <button style={{ fontSize: 12, fontWeight: 600, color: 'var(--nc-accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
                   Mark all read
                 </button>
               </div>
@@ -218,20 +232,20 @@ export default function Header({ activePage }) {
                 <div key={n.id} style={{
                   display: 'flex', alignItems: 'flex-start', gap: 11,
                   padding: '11px 18px', cursor: 'pointer',
-                  borderBottom: '1px solid var(--border)', transition: 'background .14s',
+                  borderBottom: '1px solid var(--nc-border)', transition: 'background 140ms',
                 }}
-                  onMouseEnter={e => e.currentTarget.style.background='var(--raised)'}
+                  onMouseEnter={e => e.currentTarget.style.background='var(--nc-bg-overlay)'}
                   onMouseLeave={e => e.currentTarget.style.background='transparent'}
                 >
                   <div style={{ width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: N_C[n.sev], marginTop: 6 }} />
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 13, color: 'var(--text-1)', lineHeight: 1.45 }}>{n.text}</p>
-                    <p style={{ fontSize: 11.5, color: 'var(--text-3)', marginTop: 2 }}>{n.t} ago</p>
+                    <p style={{ fontSize: 13, color: 'var(--nc-text-primary)', lineHeight: 1.45 }}>{n.text}</p>
+                    <p style={{ fontSize: 11.5, color: 'var(--nc-text-faint)', marginTop: 2 }}>{n.t} ago</p>
                   </div>
                 </div>
               ))}
               <div style={{ padding: '10px 18px', textAlign: 'center' }}>
-                <button style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+                <button style={{ fontSize: 13, fontWeight: 600, color: 'var(--nc-accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
                   View all notifications
                 </button>
               </div>
@@ -242,13 +256,13 @@ export default function Header({ activePage }) {
         {/* Avatar */}
         <div style={{
           width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-          background: 'var(--accent)',
+          background: 'linear-gradient(135deg, #00D4AA, #0891B2)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11.5, fontWeight: 800, color: '#fff', cursor: 'pointer',
-          transition: 'background .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1)',
+          fontSize: 11.5, fontWeight: 800, color: '#0B1222', cursor: 'pointer',
+          transition: 'transform 200ms cubic-bezier(.34,1.56,.64,1)',
         }}
-          onMouseEnter={e => { e.currentTarget.style.background='var(--accent2)'; e.currentTarget.style.transform='scale(1.08)' }}
-          onMouseLeave={e => { e.currentTarget.style.background='var(--accent)';  e.currentTarget.style.transform='scale(1)' }}
+          onMouseEnter={e => e.currentTarget.style.transform='scale(1.08)'}
+          onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
         >
           JR
         </div>

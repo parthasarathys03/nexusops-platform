@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTableCells } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Overview from './pages/Overview'
@@ -25,9 +28,7 @@ function ComingSoon({ label }) {
         background: 'var(--accent-s)', border: '1px solid var(--accent-b)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-        </svg>
+        <FontAwesomeIcon icon={faTableCells} style={{ fontSize: 18, color: 'var(--accent)' }} />
       </div>
       <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-1)' }}>{label}</p>
       <p style={{ fontSize: 13, color: 'var(--text-3)' }}>Coming soon — in development</p>
@@ -62,7 +63,17 @@ export default function App() {
           overflow: 'auto',
           padding: page === 'incidents' ? 0 : '28px 32px 52px',
         }}>
-          <Page />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              <Page />
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>
