@@ -117,13 +117,7 @@ function NavItem({ item, isActive, collapsed, onClick }) {
       onClick={() => enabled && onClick(item.id)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      // x-axis nudge on hover — softer entry (slight overshoot), crisp exit
-      animate={{ x: hovered && enabled && !isActive ? 2 : 0 }}
-      whileTap={enabled ? { scale: 0.97, x: 0 } : {}}
-      transition={{
-        duration: hovered ? 0.22 : 0.14,
-        ease: hovered ? [0.34, 1.3, 0.64, 1] : EASE,
-      }}
+      whileTap={enabled ? { scale: 0.97 } : {}}
       className="w-full relative flex items-center gap-3 rounded-[10px] h-[38px] text-left"
       style={{
         paddingLeft: collapsed ? 0 : '10px',
@@ -155,11 +149,10 @@ function NavItem({ item, isActive, collapsed, onClick }) {
               position: 'absolute',
               left: 0,
               top: '9px',
-              width: '3px',
+              width: '2px',
               height: '20px',
-              borderRadius: '0 3px 3px 0',
+              borderRadius: '0 2px 2px 0',
               background: '#411B7F',
-              boxShadow: '0 0 8px rgba(65,27,127,0.55)',
               transformOrigin: 'center',
               pointerEvents: 'none',
             }}

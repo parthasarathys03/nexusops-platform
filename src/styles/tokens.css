@@ -75,15 +75,14 @@
   --sidebar-section-label:  #6B6F90;
 
   /* ── Shadows ────────────────────────────────────── */
-  /* Use text-color (not pure black) for warmer, more natural shadows */
   --shadow-xs:     0 1px 2px rgba(17, 24, 39, 0.07);
-  --shadow-sm:     0 1px 3px rgba(17, 24, 39, 0.07), 0 2px 10px rgba(17, 24, 39, 0.05);
-  --shadow-card:   0 1px 2px rgba(17, 24, 39, 0.08), 0 3px 14px rgba(17, 24, 39, 0.05);
-  --shadow-card-prominent: 0 1px 3px rgba(17, 24, 39, 0.09), 0 6px 20px rgba(17, 24, 39, 0.07);
-  --shadow-hover:  0 2px 8px rgba(65, 27, 127, 0.11), 0 12px 32px rgba(65, 27, 127, 0.09), 0 1px 2px rgba(17, 24, 39, 0.06);
-  --shadow-header: 0 1px 0 rgba(17, 24, 39, 0.08), 0 2px 8px rgba(17, 24, 39, 0.04);
-  --shadow-modal:  0 8px 40px rgba(0, 0, 0, 0.14), 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-sidebar: 2px 0 8px rgba(65,27,127,0.07), 1px 0 0 var(--sidebar-border);
+  --shadow-sm:     0 1px 3px rgba(17, 24, 39, 0.08);
+  --shadow-card:   0 1px 3px rgba(17, 24, 39, 0.08);
+  --shadow-card-prominent: 0 1px 3px rgba(17, 24, 39, 0.08), 0 4px 14px rgba(17, 24, 39, 0.06);
+  --shadow-hover:  0 2px 8px rgba(65, 27, 127, 0.09), 0 8px 22px rgba(65, 27, 127, 0.07);
+  --shadow-header: 0 1px 0 rgba(17, 24, 39, 0.08);
+  --shadow-modal:  0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-sidebar: 1px 0 0 var(--sidebar-border);
 
   /* ── Fonts ──────────────────────────────────────── */
   --font-display: 'DM Sans', system-ui, sans-serif;
@@ -175,12 +174,12 @@ html.dark {
   --sidebar-text-active:    #C4A8F0;
   --sidebar-section-label:  #4E6882;
 
-  --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.20);
-  --shadow-card:   0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 16px rgba(0, 0, 0, 0.22);
-  --shadow-card-prominent: 0 1px 4px rgba(0,0,0,0.38), 0 8px 24px rgba(0,0,0,0.28);
-  --shadow-hover:  0 4px 12px rgba(0, 0, 0, 0.38), 0 16px 36px rgba(0, 0, 0, 0.28);
-  --shadow-header: 0 1px 0 rgba(255,255,255,0.04), 0 2px 8px rgba(0,0,0,0.28);
-  --shadow-modal:  0 8px 40px rgba(0, 0, 0, 0.55);
-  --shadow-sidebar: 2px 0 12px rgba(0,0,0,0.5), 1px 0 0 rgba(255,255,255,0.06);
+  --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.22);
+  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.28);
+  --shadow-card:   0 1px 3px rgba(0, 0, 0, 0.28);
+  --shadow-card-prominent: 0 1px 3px rgba(0, 0, 0, 0.30), 0 4px 14px rgba(0, 0, 0, 0.22);
+  --shadow-hover:  0 2px 10px rgba(0, 0, 0, 0.32), 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-header: 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-modal:  0 4px 28px rgba(0, 0, 0, 0.48);
+  --shadow-sidebar: 1px 0 0 rgba(255,255,255,0.06);
 }

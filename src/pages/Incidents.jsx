@@ -1,5 +1,6 @@
 import PageContainer from '../components/layout/PageContainer';
 import { DataTable } from '../components/ui/DataTable';
+import { StatStrip } from '../components/ui/StatStrip';
 
 const COLUMNS = [
   { key: 'incident', title: 'Incident' },
@@ -21,21 +22,13 @@ const ROWS = [
 export default function Incidents() {
   return (
     <PageContainer>
-      <section className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
-        {[
-          { label: 'Active', value: '2', color: 'var(--severity-critical)', bg: 'var(--color-error-muted)' },
-          { label: 'Mitigating', value: '2', color: 'var(--severity-high)', bg: 'rgba(255,107,53,0.12)' },
-          { label: 'Monitoring', value: '1', color: 'var(--severity-medium)', bg: 'var(--color-warning-muted)' },
-          { label: 'Resolved', value: '1', color: 'var(--severity-low)', bg: 'var(--color-success-muted)' },
-          { label: 'Open Total', value: '5', color: 'var(--text-primary)', bg: 'var(--bg-elevated)' },
-        ].map((stat) => (
-          <article key={stat.label} className="app-card p-4">
-            <p className="text-[30px] metric font-semibold" style={{ color: stat.color }}>{stat.value}</p>
-            <p className="label-section mt-1">{stat.label}</p>
-            <div className="mt-2 h-1 rounded-full" style={{ background: stat.bg }} />
-          </article>
-        ))}
-      </section>
+      <StatStrip stats={[
+        { label: 'Active',     value: '2', valueColor: 'var(--severity-critical)' },
+        { label: 'Mitigating', value: '2', valueColor: 'var(--severity-high)' },
+        { label: 'Monitoring', value: '1' },
+        { label: 'Resolved',   value: '1' },
+        { label: 'Open Total', value: '5' },
+      ]} />
 
       <section className="app-card p-4">
         <div className="flex items-center justify-between mb-3">

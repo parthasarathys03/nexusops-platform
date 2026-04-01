@@ -105,23 +105,7 @@ p { margin: 0; }
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-card);
-  border-radius: 14px;
-  transition:
-    box-shadow 200ms var(--ease-out),
-    border-color 200ms var(--ease-out),
-    transform 200ms var(--ease-out);
-}
-
-/* Prominent card — slightly more visual weight, used for primary content cards */
-.app-card-prominent {
-  box-shadow: var(--shadow-card-prominent);
-}
-
-/* Hoverable card variant */
-.app-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-brand);
+  border-radius: 10px;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -259,23 +243,3 @@ p { margin: 0; }
   100% { background-position:  200% 0; }
 }
 
-/* ═══════════════════════════════════════════════════════
-   GRADIENT BORDER UTILITY
-   ═══════════════════════════════════════════════════════ */
-
-.gradient-border-brand {
-  position: relative;
-}
-.gradient-border-brand::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(65,27,127,0.35), rgba(254,111,94,0.25));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
