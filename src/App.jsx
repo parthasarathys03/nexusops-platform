@@ -8,6 +8,11 @@ import RootCauseAnalysis from './pages/RootCauseAnalysis';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import Observe from './pages/Observe';
+import Insights from './pages/Insights';
+import Agents from './pages/Agents';
+import Factory from './pages/Factory';
+import Security from './pages/Security';
 
 const PAGES = {
   overview:  Overview,
@@ -17,6 +22,11 @@ const PAGES = {
   reports:   Reports,
   settings:  Settings,
   profile:   Profile,
+  observe:   Observe,
+  insights:  Insights,
+  agents:    Agents,
+  factory:   Factory,
+  security:  Security,
 };
 
 function ComingSoon({ label }) {

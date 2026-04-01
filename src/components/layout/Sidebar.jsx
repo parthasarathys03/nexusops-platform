@@ -42,7 +42,7 @@ const NAV = [
   { type: 'item', id: 'settings', label: 'Settings',             icon: faGears },
 ];
 
-const ACTIVE_IDS = new Set(['overview', 'alerts', 'incidents', 'rca', 'settings', 'reports', 'profile']);
+const ACTIVE_IDS = new Set(['overview', 'alerts', 'incidents', 'rca', 'settings', 'reports', 'profile', 'observe', 'insights', 'agents', 'factory', 'security']);
 
 /* ─────────────────────────────────────────────────────────
    MOTION VARIANTS
@@ -73,6 +73,16 @@ const labelVariants = {
 const groupBodyVariants = {
   open:   { height: 'auto', opacity: 1, transition: { duration: 0.2, ease: EASE } },
   closed: { height: 0,      opacity: 0, transition: { duration: 0.16, ease: EASE } },
+};
+
+const navListVariants = {
+  visible: { transition: { staggerChildren: 0.055, delayChildren: 0.05 } },
+  hidden:  {},
+};
+
+const navItemEntryVariants = {
+  hidden:  { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.22, ease: EASE } },
 };
 
 /* ─────────────────────────────────────────────────────────
@@ -120,34 +130,66 @@ function NavItem({ item, isActive, collapsed, onClick }) {
         paddingRight: collapsed ? 0 : '10px',
         justifyContent: collapsed ? 'center' : 'flex-start',
         background: isActive
-          ? 'var(--sidebar-active)'
+          ? 'rgba(65,27,127,0.12)'
           : hovered && enabled
-          ? 'var(--sidebar-hover)'
+          ? 'rgba(65,27,127,0.07)'
           : 'transparent',
         cursor: enabled ? 'pointer' : 'default',
-        opacity: enabled ? 1 : 0.38,
+        opacity: enabled ? 1 : 0.4,
         border: 'none',
         outline: 'none',
       }}
       title={collapsed ? item.label : undefined}
     >
-      {/* Active state — inset left accent using box-shadow (no extra DOM node) */}
-      {isActive && !collapsed && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '2px',
-            height: '18px',
-            borderRadius: '0 2px 2px 0',
-            background: 'var(--brand-violet)',
-            opacity: 0.9,
-          }}
-        />
-      )}
+      {/* Active accent bar — fixed top avoids layoutId/transform conflict */}
+      <AnimatePresence>
+        {isActive && !collapsed && (
+          <motion.span
+            key="bar"
+            initial={{ opacity: 0, scaleY: 0.3 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            exit={{ opacity: 0, scaleY: 0.3 }}
+            transition={{ duration: 0.16, ease: EASE }}
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: '9px',
+              width: '3px',
+              height: '20px',
+              borderRadius: '0 3px 3px 0',
+              background: '#411B7F',
+              boxShadow: '0 0 8px rgba(65,27,127,0.55)',
+              transformOrigin: 'center',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+      </AnimatePresence>
+      {/* Collapsed active dot */}
+      <AnimatePresence>
+        {isActive && collapsed && (
+          <motion.span
+            key="dot"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 0.15, ease: EASE }}
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: '7px',
+              right: '7px',
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#411B7F',
+              boxShadow: '0 0 6px rgba(65,27,127,0.7)',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Icon */}
       <span
@@ -156,27 +198,31 @@ function NavItem({ item, isActive, collapsed, onClick }) {
           width: '16px',
           height: '16px',
           color: isActive
-            ? 'var(--sidebar-icon-active)'
+            ? '#411B7F'
             : hovered && enabled
-            ? 'var(--text-secondary)'
+            ? '#411B7F'
             : 'var(--sidebar-icon-default)',
-          transition: `color ${180}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
+          transition: 'color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
         <FontAwesomeIcon icon={item.icon} style={{ width: '14px', height: '14px' }} />
       </span>
 
-      {/* Label + badge — active items get a font-weight nudge for "anchored" feel */}
+      {/* Label + badge */}
       <motion.span
         variants={labelVariants}
         animate={collapsed ? 'closed' : 'open'}
         className="flex-1 items-center gap-1.5 overflow-hidden"
         style={{
-          fontSize: '13px',
-          fontWeight: isActive ? 600 : 500,
-          color: isActive ? 'var(--sidebar-active-text)' : 'var(--sidebar-text-default)',
-          letterSpacing: isActive ? '-0.012em' : '-0.008em',
-          transition: `color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94), font-weight 180ms, letter-spacing 180ms`,
+          fontSize: '13.5px',
+          fontWeight: isActive ? 700 : hovered && enabled ? 600 : 500,
+          color: isActive
+            ? 'var(--sidebar-active-text)'
+            : hovered && enabled
+            ? 'var(--text-primary)'
+            : 'var(--sidebar-text-default)',
+          letterSpacing: isActive ? '-0.014em' : '-0.008em',
+          transition: 'color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
         <span className="truncate">{item.label}</span>
@@ -275,6 +321,46 @@ function NavGroup({ group, activePage, collapsed, setActivePage }) {
 }
 
 /* ─────────────────────────────────────────────────────────
+   COLLAPSE TOGGLE
+   ───────────────────────────────────────────────────────── */
+function CollapseToggle({ collapsed, setCollapsed }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.button
+      onClick={() => setCollapsed((v) => !v)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      whileTap={{ scale: 0.88 }}
+      animate={{ rotate: collapsed ? 180 : 0 }}
+      transition={{ duration: 0.24, ease: EASE }}
+      aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      style={{
+        position: 'absolute',
+        right: '-14px',
+        top: '76px',
+        width: '28px',
+        height: '28px',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 50,
+        background: hovered ? '#411B7F' : 'var(--bg-surface)',
+        border: hovered ? '1.5px solid #411B7F' : '1.5px solid var(--border-strong)',
+        color: hovered ? '#fff' : 'var(--text-secondary)',
+        boxShadow: hovered
+          ? '0 2px 10px rgba(65,27,127,0.35), 0 0 0 3px rgba(65,27,127,0.10)'
+          : '0 2px 6px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)',
+        cursor: 'pointer',
+        transition: 'background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease',
+      }}
+    >
+      <FontAwesomeIcon icon={faChevronLeft} style={{ width: '10px', height: '10px', pointerEvents: 'none' }} />
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────
    SIDEBAR ROOT
    ───────────────────────────────────────────────────────── */
 export default function Sidebar({ activePage, setActivePage, collapsed, setCollapsed }) {
@@ -309,15 +395,23 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
 
       {/* ── Logo ──────────────────────────────────── */}
       <div
-        className="flex-shrink-0 flex items-center gap-3 px-4"
+        className="flex-shrink-0 flex items-center justify-center"
         style={{
           height: 'var(--header-h)',
           borderBottom: '1px solid var(--sidebar-border)',
+          padding: '0 12px',
         }}
       >
         <div
-          className="flex-shrink-0 w-8 h-8 rounded-[9px] overflow-hidden"
-          style={{ boxShadow: '0 1px 4px rgba(65,27,127,0.2)' }}
+          style={{
+            width: collapsed ? 44 : 48,
+            height: collapsed ? 44 : 48,
+            borderRadius: 12,
+            overflow: 'hidden',
+            flexShrink: 0,
+            boxShadow: '0 2px 8px rgba(65,27,127,0.25)',
+            transition: 'width 280ms cubic-bezier(0.25,0.46,0.45,0.94), height 280ms cubic-bezier(0.25,0.46,0.45,0.94)',
+          }}
         >
           <img
             src="/sentra 1.png"
@@ -325,39 +419,6 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
           />
         </div>
-
-        <motion.div
-          variants={labelVariants}
-          animate={collapsed ? 'closed' : 'open'}
-          className="flex-col overflow-hidden"
-          style={{ display: 'flex' }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '14px',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
-              lineHeight: 1.2,
-            }}
-          >
-            Sentra
-          </span>
-          <span
-            style={{
-              fontSize: '9.5px',
-              fontWeight: 700,
-              letterSpacing: '0.09em',
-              textTransform: 'uppercase',
-              color: 'var(--sidebar-section-label)',
-              lineHeight: 1.2,
-              marginTop: '2px',
-            }}
-          >
-            AIOps Platform
-          </span>
-        </motion.div>
       </div>
 
       {/* ── Navigation ─────────────────────────────── */}
@@ -365,27 +426,34 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
         className="flex-1 overflow-y-auto px-2 py-3"
         style={{ scrollbarWidth: 'none', overflowX: 'hidden' }}
       >
-        <div className="space-y-0.5">
+        <motion.div
+          className="space-y-0.5"
+          variants={navListVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {NAV.map((entry, i) =>
             entry.type === 'group' ? (
-              <NavGroup
-                key={i}
-                group={entry}
-                activePage={activePage}
-                collapsed={collapsed}
-                setActivePage={setActivePage}
-              />
+              <motion.div key={i} variants={navItemEntryVariants}>
+                <NavGroup
+                  group={entry}
+                  activePage={activePage}
+                  collapsed={collapsed}
+                  setActivePage={setActivePage}
+                />
+              </motion.div>
             ) : (
-              <NavItem
-                key={entry.id}
-                item={entry}
-                isActive={activePage === entry.id}
-                collapsed={collapsed}
-                onClick={setActivePage}
-              />
+              <motion.div key={entry.id} variants={navItemEntryVariants}>
+                <NavItem
+                  item={entry}
+                  isActive={activePage === entry.id}
+                  collapsed={collapsed}
+                  onClick={setActivePage}
+                />
+              </motion.div>
             )
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── User section ───────────────────────────── */}
@@ -448,28 +516,7 @@ export default function Sidebar({ activePage, setActivePage, collapsed, setColla
       </div>
 
       {/* ── Collapse toggle ────────────────────────── */}
-      <motion.button
-        onClick={() => setCollapsed((v) => !v)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        animate={{ rotate: collapsed ? 180 : 0 }}
-        transition={{ duration: 0.22, ease: EASE }}
-        className="absolute z-20 flex items-center justify-center"
-        style={{
-          right: '-12px',
-          top: '72px',
-          width: '24px',
-          height: '24px',
-          borderRadius: '50%',
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border-default)',
-          color: 'var(--text-tertiary)',
-          boxShadow: 'var(--shadow-sm)',
-          cursor: 'pointer',
-        }}
-      >
-        <FontAwesomeIcon icon={faChevronLeft} style={{ width: '9px', height: '9px' }} />
-      </motion.button>
+      <CollapseToggle collapsed={collapsed} setCollapsed={setCollapsed} />
     </motion.aside>
   );
 }

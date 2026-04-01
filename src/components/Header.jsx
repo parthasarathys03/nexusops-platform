@@ -198,22 +198,25 @@ export default function Header({ activePage, isDark, toggleTheme }) {
       {/* ── Theme toggle ─────────────────────────────── */}
       <button
         onClick={toggleTheme}
-        style={iconBtn.base}
-        title={isDark ? 'Light mode' : 'Dark mode'}
+        style={{
+          ...iconBtn.base,
+          color: isDark ? '#F59E0B' : '#411B7F',
+          background: isDark ? 'rgba(245,158,11,0.08)' : 'rgba(65,27,127,0.06)',
+          borderColor: isDark ? 'rgba(245,158,11,0.25)' : 'var(--border-brand)',
+        }}
+        title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-brand)';
-          e.currentTarget.style.background = 'var(--accent-primary-subtle)';
-          e.currentTarget.style.color = 'var(--brand-violet)';
+          e.currentTarget.style.borderColor = isDark ? 'rgba(245,158,11,0.5)' : '#411B7F';
+          e.currentTarget.style.background = isDark ? 'rgba(245,158,11,0.15)' : 'rgba(65,27,127,0.12)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-default)';
-          e.currentTarget.style.background = 'transparent';
-          e.currentTarget.style.color = 'var(--text-tertiary)';
+          e.currentTarget.style.borderColor = isDark ? 'rgba(245,158,11,0.25)' : 'var(--border-brand)';
+          e.currentTarget.style.background = isDark ? 'rgba(245,158,11,0.08)' : 'rgba(65,27,127,0.06)';
         }}
       >
         <FontAwesomeIcon
           icon={isDark ? faSun : faMoon}
-          style={{ width: '13px', height: '13px' }}
+          style={{ width: '15px', height: '15px' }}
         />
       </button>
 

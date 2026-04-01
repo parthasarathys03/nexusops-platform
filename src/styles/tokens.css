@@ -33,9 +33,9 @@
 
   /* ── Text ───────────────────────────────────────── */
   --text-primary:   #111827;
-  --text-secondary: #4B5563;
-  --text-tertiary:  #9CA3AF;
-  --text-placeholder: #BBC0CB;
+  --text-secondary: #374151;
+  --text-tertiary:  #6B7280;
+  --text-placeholder: #9CA3AF;
   --text-inverse:   #FFFFFF;
   --text-brand:     #411B7F;
 
@@ -63,16 +63,16 @@
   --severity-info:      #411B7F;
 
   /* ── Sidebar ────────────────────────────────────── */
-  --sidebar-bg:             #FCFCFE;
-  --sidebar-border:         #ECEEF5;
-  --sidebar-hover:          rgba(65, 27, 127, 0.05);
-  --sidebar-active:         rgba(65, 27, 127, 0.08);
-  --sidebar-active-text:    #381A6D;
-  --sidebar-icon-default:   #A0A8B8;
+  --sidebar-bg:             #EEEDF6;
+  --sidebar-border:         #D0CCEB;
+  --sidebar-hover:          rgba(65, 27, 127, 0.09);
+  --sidebar-active:         rgba(65, 27, 127, 0.13);
+  --sidebar-active-text:    #21105A;
+  --sidebar-icon-default:   #4E526B;
   --sidebar-icon-active:    #411B7F;
-  --sidebar-text-default:   #6B7280;
-  --sidebar-text-active:    #381A6D;
-  --sidebar-section-label:  #B8BFCC;
+  --sidebar-text-default:   #1C2040;
+  --sidebar-text-active:    #21105A;
+  --sidebar-section-label:  #6B6F90;
 
   /* ── Shadows ────────────────────────────────────── */
   /* Use text-color (not pure black) for warmer, more natural shadows */
@@ -83,7 +83,7 @@
   --shadow-hover:  0 2px 8px rgba(65, 27, 127, 0.11), 0 12px 32px rgba(65, 27, 127, 0.09), 0 1px 2px rgba(17, 24, 39, 0.06);
   --shadow-header: 0 1px 0 rgba(17, 24, 39, 0.08), 0 2px 8px rgba(17, 24, 39, 0.04);
   --shadow-modal:  0 8px 40px rgba(0, 0, 0, 0.14), 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-sidebar: 1px 0 0 var(--sidebar-border);
+  --shadow-sidebar: 2px 0 8px rgba(65,27,127,0.07), 1px 0 0 var(--sidebar-border);
 
   /* ── Fonts ──────────────────────────────────────── */
   --font-display: 'DM Sans', system-ui, sans-serif;
@@ -137,19 +137,19 @@ html.dark {
   --accent-secondary:      #FF8A7A;
   --accent-secondary-subtle: rgba(255, 138, 122, 0.10);
 
-  /* Slightly softer primary — avoids harsh white-on-navy */
-  --text-primary:      #D5DCEA;
-  --text-secondary:    #7E8FA8;
-  --text-tertiary:     #48596E;
-  --text-placeholder:  #374D62;
-  --text-brand:        #A07ED8;
+  /* Strong, readable hierarchy on dark navy */
+  --text-primary:      #E4EAF4;
+  --text-secondary:    #A0B0C8;
+  --text-tertiary:     #6E84A0;
+  --text-placeholder:  #4A6180;
+  --text-brand:        #B08EDE;
 
-  /* Softer borders = calmer dark mode, less clinical */
-  --border-subtle:  rgba(255, 255, 255, 0.04);
-  --border-default: rgba(255, 255, 255, 0.07);
-  --border-strong:  rgba(255, 255, 255, 0.11);
-  --border-brand:   rgba(139, 104, 200, 0.20);
-  --border-focus:   rgba(139, 104, 200, 0.38);
+  /* Visible borders — calmer dark mode but still readable */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-strong:  rgba(255, 255, 255, 0.16);
+  --border-brand:   rgba(139, 104, 200, 0.28);
+  --border-focus:   rgba(139, 104, 200, 0.45);
 
   --color-success:       #10B981;
   --color-success-muted: rgba(16, 185, 129, 0.11);
@@ -164,16 +164,16 @@ html.dark {
   --severity-low:      #34D399;
   --severity-info:     #A07ED8;
 
-  --sidebar-bg:             #0C1220;
-  --sidebar-border:         rgba(255, 255, 255, 0.06);
-  --sidebar-hover:          rgba(139, 104, 200, 0.07);
-  --sidebar-active:         rgba(139, 104, 200, 0.12);
-  --sidebar-active-text:    #B08EDE;
-  --sidebar-icon-default:   #3D4F66;
-  --sidebar-icon-active:    #A07ED8;
-  --sidebar-text-default:   #3D4F66;
-  --sidebar-text-active:    #B08EDE;
-  --sidebar-section-label:  #2D3D55;
+  --sidebar-bg:             #0B1120;
+  --sidebar-border:         rgba(255, 255, 255, 0.08);
+  --sidebar-hover:          rgba(139, 104, 200, 0.12);
+  --sidebar-active:         rgba(139, 104, 200, 0.18);
+  --sidebar-active-text:    #C4A8F0;
+  --sidebar-icon-default:   #6E84A0;
+  --sidebar-icon-active:    #B08EDE;
+  --sidebar-text-default:   #8CA5C4;
+  --sidebar-text-active:    #C4A8F0;
+  --sidebar-section-label:  #4E6882;
 
   --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.25);
   --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.20);
@@ -182,5 +182,5 @@ html.dark {
   --shadow-hover:  0 4px 12px rgba(0, 0, 0, 0.38), 0 16px 36px rgba(0, 0, 0, 0.28);
   --shadow-header: 0 1px 0 rgba(255,255,255,0.04), 0 2px 8px rgba(0,0,0,0.28);
   --shadow-modal:  0 8px 40px rgba(0, 0, 0, 0.55);
-  --shadow-sidebar: 1px 0 0 rgba(255,255,255,0.04);
+  --shadow-sidebar: 2px 0 12px rgba(0,0,0,0.5), 1px 0 0 rgba(255,255,255,0.06);
 }
