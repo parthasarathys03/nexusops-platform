@@ -143,12 +143,12 @@ html.dark {
   --text-placeholder:  #52525b;
   --text-brand:        #c4b5fd;
 
-  /* Subtle borders — just enough to separate surfaces */
-  --border-subtle:  rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.09);
-  --border-strong:  rgba(255, 255, 255, 0.15);
-  --border-brand:   rgba(167, 139, 250, 0.30);
-  --border-focus:   rgba(167, 139, 250, 0.50);
+  /* Visible but calm separators — like Claude, not invisible */
+  --border-subtle:  rgba(255, 255, 255, 0.07);
+  --border-default: rgba(255, 255, 255, 0.11);
+  --border-strong:  rgba(255, 255, 255, 0.19);
+  --border-brand:   rgba(167, 139, 250, 0.35);
+  --border-focus:   rgba(167, 139, 250, 0.55);
 
   --color-success:       #34d399;
   --color-success-muted: rgba(52, 211, 153, 0.10);
@@ -164,11 +164,11 @@ html.dark {
   --severity-low:      #34d399;
   --severity-info:     #a78bfa;
 
-  /* Sidebar — same near-black, clean neutral active states */
+  /* Sidebar — same near-black, clear active highlight */
   --sidebar-bg:             #111113;
-  --sidebar-border:         rgba(255, 255, 255, 0.07);
-  --sidebar-hover:          rgba(255, 255, 255, 0.05);
-  --sidebar-active:         rgba(255, 255, 255, 0.08);
+  --sidebar-border:         rgba(255, 255, 255, 0.08);
+  --sidebar-hover:          rgba(255, 255, 255, 0.06);
+  --sidebar-active:         rgba(255, 255, 255, 0.10);
   --sidebar-active-text:    #fafafa;
   --sidebar-icon-default:   #71717a;
   --sidebar-icon-active:    #fafafa;
