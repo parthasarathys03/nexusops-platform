@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// UI update: MetricCard component for displaying key metrics with change indicators
+
 const EASE = [0.25, 0.46, 0.45, 0.94];
 
 /**
